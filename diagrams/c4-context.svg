@@ -1,0 +1,199 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#666"/>
+    </marker>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="110%">
+      <feDropShadow dx="2" dy="2" stdDeviation="3" flood-opacity="0.15"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1400" height="900" fill="#f8f9fa"/>
+
+  <!-- Title -->
+  <text x="700" y="38" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1a2e">C4 — Diagrama de Contexto | BP Internet Banking</text>
+  <text x="700" y="58" text-anchor="middle" font-size="13" fill="#666">Nivel 1 · Para audiencia no técnica · Muestra actores y sistemas externos</text>
+  <line x1="60" y1="68" x2="1340" y2="68" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- PERSON: Cliente BP -->
+  <!-- ═══════════════════════════════════════════ -->
+  <g transform="translate(100,120)" filter="url(#shadow)">
+    <ellipse cx="55" cy="32" rx="22" ry="22" fill="#1168bd"/>
+    <line x1="55" y1="54" x2="55" y2="100" stroke="#1168bd" stroke-width="4"/>
+    <line x1="25" y1="72" x2="85" y2="72" stroke="#1168bd" stroke-width="4"/>
+    <line x1="55" y1="100" x2="30" y2="130" stroke="#1168bd" stroke-width="4"/>
+    <line x1="55" y1="100" x2="80" y2="130" stroke="#1168bd" stroke-width="4"/>
+    <rect x="0" y="138" width="110" height="52" rx="4" fill="#1168bd"/>
+    <text x="55" y="157" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Cliente BP</text>
+    <text x="55" y="172" text-anchor="middle" font-size="10" fill="#cce4ff">[Person]</text>
+    <text x="55" y="184" text-anchor="middle" font-size="9" fill="#cce4ff">Usuario del canal</text>
+  </g>
+
+  <!-- PERSON: Operador Backoffice -->
+  <g transform="translate(100,380)" filter="url(#shadow)">
+    <ellipse cx="55" cy="32" rx="22" ry="22" fill="#0a5a8a"/>
+    <line x1="55" y1="54" x2="55" y2="100" stroke="#0a5a8a" stroke-width="4"/>
+    <line x1="25" y1="72" x2="85" y2="72" stroke="#0a5a8a" stroke-width="4"/>
+    <line x1="55" y1="100" x2="30" y2="130" stroke="#0a5a8a" stroke-width="4"/>
+    <line x1="55" y1="100" x2="80" y2="130" stroke="#0a5a8a" stroke-width="4"/>
+    <rect x="0" y="138" width="110" height="52" rx="4" fill="#0a5a8a"/>
+    <text x="55" y="157" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Operador</text>
+    <text x="55" y="170" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Backoffice</text>
+    <text x="55" y="183" text-anchor="middle" font-size="10" fill="#cce4ff">[Person]</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- MAIN SYSTEM: BP Internet Banking -->
+  <!-- ═══════════════════════════════════════════ -->
+  <g transform="translate(490,180)" filter="url(#shadow)">
+    <rect width="360" height="200" rx="8" fill="#1168bd"/>
+    <rect x="0" y="0" width="360" height="36" rx="8" fill="#0d56a6"/>
+    <rect x="0" y="28" width="360" height="8" fill="#0d56a6"/>
+    <text x="180" y="22" text-anchor="middle" font-size="14" font-weight="bold" fill="#fff">BP Internet Banking</text>
+    <text x="180" y="50" text-anchor="middle" font-size="11" fill="#cce4ff">[Software System]</text>
+    <line x1="20" y1="62" x2="340" y2="62" stroke="#ffffff33" stroke-width="1"/>
+    <text x="180" y="82" text-anchor="middle" font-size="11" fill="#fff">Canal digital del Banco BP.</text>
+    <text x="180" y="98" text-anchor="middle" font-size="11" fill="#fff">Consulta de movimientos,</text>
+    <text x="180" y="114" text-anchor="middle" font-size="11" fill="#fff">transferencias y pagos.</text>
+    <text x="180" y="130" text-anchor="middle" font-size="11" fill="#fff">SPA Web + App Móvil</text>
+    <text x="180" y="146" text-anchor="middle" font-size="11" fill="#fff">con autenticación OAuth2.</text>
+    <text x="180" y="168" text-anchor="middle" font-size="10" fill="#cce4ff">Next.js · Flutter · AWS</text>
+    <text x="180" y="184" text-anchor="middle" font-size="10" fill="#cce4ff">Microservicios · API Gateway</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- EXTERNAL SYSTEMS — Columna derecha -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- Core Bancario -->
+  <g transform="translate(970,90)" filter="url(#shadow)">
+    <rect width="200" height="80" rx="6" fill="#999"/>
+    <rect x="0" y="0" width="200" height="28" rx="6" fill="#7a7a7a"/>
+    <rect x="0" y="20" width="200" height="8" fill="#7a7a7a"/>
+    <text x="100" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Core Bancario</text>
+    <text x="100" y="42" text-anchor="middle" font-size="10" fill="#eee">[Sistema Externo]</text>
+    <text x="100" y="57" text-anchor="middle" font-size="10" fill="#eee">Clientes, cuentas,</text>
+    <text x="100" y="70" text-anchor="middle" font-size="10" fill="#eee">productos, movimientos</text>
+  </g>
+
+  <!-- Sistema Complementario -->
+  <g transform="translate(970,210)" filter="url(#shadow)">
+    <rect width="200" height="80" rx="6" fill="#999"/>
+    <rect x="0" y="0" width="200" height="28" rx="6" fill="#7a7a7a"/>
+    <rect x="0" y="20" width="200" height="8" fill="#7a7a7a"/>
+    <text x="100" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Sistema</text>
+    <text x="100" y="31" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Complementario</text>
+    <text x="100" y="46" text-anchor="middle" font-size="10" fill="#eee">[Sistema Externo]</text>
+    <text x="100" y="60" text-anchor="middle" font-size="10" fill="#eee">Datos detallados</text>
+    <text x="100" y="73" text-anchor="middle" font-size="10" fill="#eee">del cliente</text>
+  </g>
+
+  <!-- AWS Cognito -->
+  <g transform="translate(970,330)" filter="url(#shadow)">
+    <rect width="200" height="80" rx="6" fill="#999"/>
+    <rect x="0" y="0" width="200" height="28" rx="6" fill="#7a7a7a"/>
+    <rect x="0" y="20" width="200" height="8" fill="#7a7a7a"/>
+    <text x="100" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">AWS Cognito</text>
+    <text x="100" y="42" text-anchor="middle" font-size="10" fill="#eee">[Identity Provider]</text>
+    <text x="100" y="57" text-anchor="middle" font-size="10" fill="#eee">OAuth2 / OIDC</text>
+    <text x="100" y="70" text-anchor="middle" font-size="10" fill="#eee">MFA · User Pools</text>
+  </g>
+
+  <!-- AWS Rekognition -->
+  <g transform="translate(970,450)" filter="url(#shadow)">
+    <rect width="200" height="80" rx="6" fill="#999"/>
+    <rect x="0" y="0" width="200" height="28" rx="6" fill="#7a7a7a"/>
+    <rect x="0" y="20" width="200" height="8" fill="#7a7a7a"/>
+    <text x="100" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">AWS Rekognition</text>
+    <text x="100" y="42" text-anchor="middle" font-size="10" fill="#eee">[Biometría]</text>
+    <text x="100" y="57" text-anchor="middle" font-size="10" fill="#eee">Liveness check</text>
+    <text x="100" y="70" text-anchor="middle" font-size="10" fill="#eee">Reconocimiento facial</text>
+  </g>
+
+  <!-- ACH Colombia -->
+  <g transform="translate(970,570)" filter="url(#shadow)">
+    <rect width="200" height="80" rx="6" fill="#999"/>
+    <rect x="0" y="0" width="200" height="28" rx="6" fill="#7a7a7a"/>
+    <rect x="0" y="20" width="200" height="8" fill="#7a7a7a"/>
+    <text x="100" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Red ACH Colombia</text>
+    <text x="100" y="42" text-anchor="middle" font-size="10" fill="#eee">[Red de Pagos]</text>
+    <text x="100" y="57" text-anchor="middle" font-size="10" fill="#eee">Pagos interbancarios</text>
+    <text x="100" y="70" text-anchor="middle" font-size="10" fill="#eee">nacionales · ISO 20022</text>
+  </g>
+
+  <!-- Notificaciones: SNS, SES, Twilio -->
+  <g transform="translate(970,690)" filter="url(#shadow)">
+    <rect width="200" height="100" rx="6" fill="#999"/>
+    <rect x="0" y="0" width="200" height="28" rx="6" fill="#7a7a7a"/>
+    <rect x="0" y="20" width="200" height="8" fill="#7a7a7a"/>
+    <text x="100" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Notificaciones</text>
+    <text x="100" y="42" text-anchor="middle" font-size="10" fill="#eee">[Servicios Externos]</text>
+    <text x="100" y="57" text-anchor="middle" font-size="10" fill="#eee">AWS SNS (push/SMS)</text>
+    <text x="100" y="70" text-anchor="middle" font-size="10" fill="#eee">Amazon SES (email)</text>
+    <text x="100" y="83" text-anchor="middle" font-size="10" fill="#eee">Twilio (WhatsApp/SMS)</text>
+  </g>
+
+  <!-- ═══════════════════════════════════════════ -->
+  <!-- FLECHAS -->
+  <!-- ═══════════════════════════════════════════ -->
+
+  <!-- Cliente → BP System -->
+  <line x1="210" y1="225" x2="490" y2="282" stroke="#666" stroke-width="1.5" stroke-dasharray="none" marker-end="url(#arrow)"/>
+  <rect x="275" y="238" width="130" height="28" rx="3" fill="#ffffffcc"/>
+  <text x="340" y="250" text-anchor="middle" font-size="9" fill="#333">Consulta y transacciones</text>
+  <text x="340" y="262" text-anchor="middle" font-size="9" fill="#666">HTTPS</text>
+
+  <!-- Backoffice → BP System -->
+  <line x1="210" y1="490" x2="492" y2="380" stroke="#666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="270" y="415" width="120" height="28" rx="3" fill="#ffffffcc"/>
+  <text x="330" y="427" text-anchor="middle" font-size="9" fill="#333">Monitoreo y auditoría</text>
+  <text x="330" y="439" text-anchor="middle" font-size="9" fill="#666">HTTPS</text>
+
+  <!-- BP System → Core -->
+  <line x1="850" y1="255" x2="970" y2="130" stroke="#666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="868" y="175" width="112" height="28" rx="3" fill="#ffffffcc"/>
+  <text x="924" y="187" text-anchor="middle" font-size="9" fill="#333">Datos de clientes</text>
+  <text x="924" y="199" text-anchor="middle" font-size="9" fill="#666">REST / HTTPS</text>
+
+  <!-- BP System → Complementario -->
+  <line x1="850" y1="280" x2="970" y2="252" stroke="#666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="865" y="253" width="112" height="28" rx="3" fill="#ffffffcc"/>
+  <text x="921" y="265" text-anchor="middle" font-size="9" fill="#333">Datos en detalle</text>
+  <text x="921" y="277" text-anchor="middle" font-size="9" fill="#666">REST / HTTPS</text>
+
+  <!-- BP System → Cognito -->
+  <line x1="850" y1="305" x2="970" y2="372" stroke="#666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="865" y="324" width="112" height="28" rx="3" fill="#ffffffcc"/>
+  <text x="921" y="336" text-anchor="middle" font-size="9" fill="#333">Autenticación</text>
+  <text x="921" y="348" text-anchor="middle" font-size="9" fill="#666">OAuth2 / OIDC</text>
+
+  <!-- BP System → Rekognition -->
+  <line x1="850" y1="335" x2="970" y2="488" stroke="#666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="868" y="392" width="110" height="28" rx="3" fill="#ffffffcc"/>
+  <text x="923" y="404" text-anchor="middle" font-size="9" fill="#333">Verificación facial</text>
+  <text x="923" y="416" text-anchor="middle" font-size="9" fill="#666">HTTPS</text>
+
+  <!-- BP System → ACH -->
+  <line x1="850" y1="355" x2="970" y2="610" stroke="#666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="870" y="468" width="106" height="28" rx="3" fill="#ffffffcc"/>
+  <text x="923" y="480" text-anchor="middle" font-size="9" fill="#333">Pagos interbancarios</text>
+  <text x="923" y="492" text-anchor="middle" font-size="9" fill="#666">ISO 20022</text>
+
+  <!-- BP System → Notificaciones -->
+  <line x1="850" y1="370" x2="970" y2="730" stroke="#666" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="866" y="530" width="110" height="28" rx="3" fill="#ffffffcc"/>
+  <text x="921" y="542" text-anchor="middle" font-size="9" fill="#333">Push, SMS, Email</text>
+  <text x="921" y="554" text-anchor="middle" font-size="9" fill="#666">HTTPS / SMTP</text>
+
+  <!-- Legend -->
+  <rect x="60" y="820" width="500" height="60" rx="6" fill="#fff" stroke="#ddd"/>
+  <rect x="80" y="836" width="20" height="14" rx="2" fill="#1168bd"/>
+  <text x="108" y="847" font-size="11" fill="#333">Sistema Principal (BP)</text>
+  <rect x="230" y="836" width="20" height="14" rx="2" fill="#999"/>
+  <text x="258" y="847" font-size="11" fill="#333">Sistema Externo</text>
+  <ellipse cx="390" cy="843" rx="10" ry="10" fill="#1168bd"/>
+  <text x="408" y="847" font-size="11" fill="#333">Persona / Actor</text>
+  <text x="80" y="868" font-size="10" fill="#666">Convenciones C4 Model — Simon Brown | draw.io compatible</text>
+</svg>

@@ -1,0 +1,186 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#555"/>
+    </marker>
+    <filter id="shadow"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.1"/></filter>
+  </defs>
+  <rect width="1400" height="900" fill="#f0f4f8"/>
+
+  <text x="700" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1a2e">Infraestructura AWS — Alta Disponibilidad y Disaster Recovery</text>
+  <text x="700" y="52" text-anchor="middle" font-size="11" fill="#666">Multi-AZ en región primaria (us-east-1) · Cross-Region DR (sa-east-1 São Paulo) · RTO &lt;1h · RPO &lt;15min</text>
+  <line x1="40" y1="62" x2="1360" y2="62" stroke="#ccc" stroke-width="1"/>
+
+  <!-- ══ INTERNET / USERS ══ -->
+  <rect x="570" y="75" width="260" height="45" rx="6" fill="#1168bd"/>
+  <text x="700" y="97" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Usuarios / Internet</text>
+  <text x="700" y="112" text-anchor="middle" font-size="10" fill="#cce4ff">Clientes BP · Web · Móvil</text>
+
+  <!-- AWS Shield + WAF -->
+  <line x1="700" y1="120" x2="700" y2="148" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="580" y="148" width="240" height="40" rx="5" fill="#c62828"/>
+  <text x="700" y="164" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">AWS Shield + WAF</text>
+  <text x="700" y="178" text-anchor="middle" font-size="9" fill="#ffcdd2">DDoS Protection · OWASP Rules · Geo-blocking</text>
+
+  <!-- CloudFront CDN -->
+  <line x1="700" y1="188" x2="700" y2="210" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <rect x="575" y="210" width="250" height="40" rx="5" fill="#2d6b8b"/>
+  <text x="700" y="228" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Amazon CloudFront</text>
+  <text x="700" y="242" text-anchor="middle" font-size="9" fill="#cde">CDN Global · TLS 1.3 · HTTPS Forced · Cache SPA assets</text>
+
+  <!-- ══ REGION us-east-1 ══ -->
+  <rect x="40" y="268" width="870" height="590" rx="8" fill="#e8eaf6" stroke="#3f51b5" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="55" y="288" font-size="12" font-weight="bold" fill="#3f51b5">AWS Region: us-east-1 (N. Virginia) — Región Primaria</text>
+
+  <!-- AZ-1 -->
+  <rect x="55" y="298" width="400" height="540" rx="6" fill="#e3f2fd" stroke="#1168bd" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="255" y="318" text-anchor="middle" font-size="11" font-weight="bold" fill="#1168bd">Availability Zone 1a</text>
+
+  <!-- ECS Cluster AZ1 -->
+  <rect x="70" y="328" width="370" height="200" rx="5" fill="#fff" stroke="#1168bd" stroke-width="1"/>
+  <text x="255" y="346" text-anchor="middle" font-size="10" font-weight="bold" fill="#1168bd">ECS Fargate Cluster</text>
+  <text x="255" y="360" text-anchor="middle" font-size="9" fill="#555">Auto Scaling · Health Checks · Auto-Healing</text>
+
+  <!-- Services boxes AZ1 -->
+  <rect x="80" y="368" width="100" height="36" rx="4" fill="#2e7d32"/>
+  <text x="130" y="382" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">Auth Svc</text>
+  <text x="130" y="394" text-anchor="middle" font-size="8" fill="#c8e6c9">NestJS</text>
+
+  <rect x="190" y="368" width="100" height="36" rx="4" fill="#2e7d32"/>
+  <text x="240" y="382" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">Customer Svc</text>
+  <text x="240" y="394" text-anchor="middle" font-size="8" fill="#c8e6c9">Spring</text>
+
+  <rect x="300" y="368" width="120" height="36" rx="4" fill="#2e7d32"/>
+  <text x="360" y="382" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">Movements Svc</text>
+  <text x="360" y="394" text-anchor="middle" font-size="8" fill="#c8e6c9">Spring CQRS</text>
+
+  <rect x="80" y="412" width="100" height="36" rx="4" fill="#2e7d32"/>
+  <text x="130" y="426" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">Transfer Svc</text>
+  <text x="130" y="438" text-anchor="middle" font-size="8" fill="#c8e6c9">Saga</text>
+
+  <rect x="190" y="412" width="100" height="36" rx="4" fill="#2e7d32"/>
+  <text x="240" y="426" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">Payment Svc</text>
+  <text x="240" y="438" text-anchor="middle" font-size="8" fill="#c8e6c9">Saga</text>
+
+  <rect x="300" y="412" width="120" height="36" rx="4" fill="#2e7d32"/>
+  <text x="360" y="426" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">Notification Svc</text>
+  <text x="360" y="438" text-anchor="middle" font-size="8" fill="#c8e6c9">NestJS</text>
+
+  <rect x="80" y="456" width="100" height="36" rx="4" fill="#2e7d32"/>
+  <text x="130" y="470" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">Audit Svc</text>
+  <text x="130" y="482" text-anchor="middle" font-size="8" fill="#c8e6c9">Event Sourcing</text>
+
+  <rect x="190" y="456" width="100" height="36" rx="4" fill="#2d8b6b"/>
+  <text x="240" y="470" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">BFF Web</text>
+  <text x="240" y="482" text-anchor="middle" font-size="8" fill="#cef">Node.js</text>
+
+  <rect x="300" y="456" width="120" height="36" rx="4" fill="#2d8b6b"/>
+  <text x="360" y="470" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">BFF Mobile</text>
+  <text x="360" y="482" text-anchor="middle" font-size="8" fill="#cef">Node.js</text>
+
+  <!-- RDS Primary AZ1 -->
+  <rect x="70" y="535" width="170" height="60" rx="5" fill="#438dd5"/>
+  <text x="155" y="555" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">RDS PostgreSQL</text>
+  <text x="155" y="569" text-anchor="middle" font-size="9" fill="#ddeeff">Primary (Write)</text>
+  <text x="155" y="583" text-anchor="middle" font-size="9" fill="#ddeeff">Multi-AZ Master</text>
+
+  <!-- Redis Primary AZ1 -->
+  <rect x="255" y="535" width="170" height="60" rx="5" fill="#e06c00"/>
+  <text x="340" y="555" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">ElastiCache Redis</text>
+  <text x="340" y="569" text-anchor="middle" font-size="9" fill="#ffe0cc">Primary Node</text>
+  <text x="340" y="583" text-anchor="middle" font-size="9" fill="#ffe0cc">Cache-Aside</text>
+
+  <!-- DynamoDB Global -->
+  <rect x="70" y="610" width="355" height="55" rx="5" fill="#438dd5"/>
+  <text x="247" y="632" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Amazon DynamoDB (Global Tables)</text>
+  <text x="247" y="648" text-anchor="middle" font-size="9" fill="#ddeeff">Auditoría append-only · Replicado automáticamente entre regiones</text>
+
+  <!-- SQS/SNS AZ1 -->
+  <rect x="70" y="678" width="355" height="50" rx="25" fill="#f0a500"/>
+  <text x="247" y="698" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Amazon SQS + SNS</text>
+  <text x="247" y="712" text-anchor="middle" font-size="9" fill="#fff">Bus de eventos · Alta disponibilidad administrada · Multi-AZ por diseño</text>
+
+  <!-- AZ-2 -->
+  <rect x="465" y="298" width="400" height="540" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="665" y="318" text-anchor="middle" font-size="11" font-weight="bold" fill="#2e7d32">Availability Zone 1b</text>
+
+  <!-- ECS Cluster AZ2 (replica) -->
+  <rect x="480" y="328" width="370" height="200" rx="5" fill="#fff" stroke="#2e7d32" stroke-width="1"/>
+  <text x="665" y="346" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">ECS Fargate Cluster (Réplica)</text>
+  <text x="665" y="360" text-anchor="middle" font-size="9" fill="#555">Mismos servicios — ALB distribuye tráfico 50/50</text>
+
+  <!-- Abbreviated services -->
+  <rect x="490" y="375" width="340" height="144" rx="5" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="660" y="402" text-anchor="middle" font-size="10" fill="#2e7d32">Réplica exacta de todos los microservicios</text>
+  <text x="660" y="420" text-anchor="middle" font-size="10" fill="#2e7d32">Auth · Customer · Movements · Transfer</text>
+  <text x="660" y="438" text-anchor="middle" font-size="10" fill="#2e7d32">Payment · Notification · Audit · BFF</text>
+  <text x="660" y="460" text-anchor="middle" font-size="9" fill="#555">Si AZ-1 falla → ALB redirige 100% al AZ-1b</text>
+  <text x="660" y="478" text-anchor="middle" font-size="9" fill="#555">Failover automático &lt;30 segundos</text>
+  <text x="660" y="496" text-anchor="middle" font-size="9" fill="#555">Auto Scaling: scale-out en &lt;2 min bajo carga</text>
+
+  <!-- RDS Standby AZ2 -->
+  <rect x="480" y="535" width="170" height="60" rx="5" fill="#2d78c8"/>
+  <text x="565" y="555" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">RDS PostgreSQL</text>
+  <text x="565" y="569" text-anchor="middle" font-size="9" fill="#ddeeff">Standby (Read Replica)</text>
+  <text x="565" y="583" text-anchor="middle" font-size="9" fill="#ddeeff">Failover automático</text>
+
+  <!-- Redis Replica AZ2 -->
+  <rect x="665" y="535" width="170" height="60" rx="5" fill="#b85500"/>
+  <text x="750" y="555" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">ElastiCache Redis</text>
+  <text x="750" y="569" text-anchor="middle" font-size="9" fill="#ffe0cc">Replica Node</text>
+  <text x="750" y="583" text-anchor="middle" font-size="9" fill="#ffe0cc">Auto-failover</text>
+
+  <!-- ALB between zones -->
+  <rect x="340" y="748" width="200" height="40" rx="5" fill="#6b2d8b"/>
+  <text x="440" y="766" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Application Load Balancer</text>
+  <text x="440" y="780" text-anchor="middle" font-size="9" fill="#e8d0ff">Round-robin · Health checks cada 10s</text>
+
+  <!-- ══ DR REGION sa-east-1 ══ -->
+  <rect x="940" y="268" width="420" height="590" rx="8" fill="#fce4ec" stroke="#c62828" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="1150" y="288" text-anchor="middle" font-size="12" font-weight="bold" fill="#c62828">AWS Region: sa-east-1 (São Paulo) — DR</text>
+  <text x="1150" y="304" text-anchor="middle" font-size="10" fill="#c62828">Warm Standby · RTO &lt;1h · RPO &lt;15min</text>
+
+  <!-- DR Services -->
+  <rect x="955" y="318" width="390" height="180" rx="5" fill="#fff" stroke="#c62828" stroke-width="1"/>
+  <text x="1150" y="338" text-anchor="middle" font-size="10" font-weight="bold" fill="#c62828">ECS Fargate (Warm Standby)</text>
+  <text x="1150" y="354" text-anchor="middle" font-size="9" fill="#555">Servicios críticos en modo idle · Scale-up en 15 min ante activación DR</text>
+  <rect x="965" y="368" width="165" height="32" rx="4" fill="#c62828"/>
+  <text x="1048" y="380" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">Auth + Transfer Svc</text>
+  <text x="1048" y="392" text-anchor="middle" font-size="8" fill="#ffcdd2">Activos (críticos)</text>
+  <rect x="1150" y="368" width="165" height="32" rx="4" fill="#e57373"/>
+  <text x="1233" y="380" text-anchor="middle" font-size="9" font-weight="bold" fill="#fff">Demás servicios</text>
+  <text x="1233" y="392" text-anchor="middle" font-size="8" fill="#fff">Warm standby</text>
+  <rect x="965" y="410" width="350" height="75" rx="4" fill="#fce4ec" stroke="#c62828" stroke-width="1" stroke-dasharray="4,2"/>
+  <text x="1140" y="432" text-anchor="middle" font-size="9" fill="#c62828">Activación DR: Route53 Health Check detecta fallo</text>
+  <text x="1140" y="448" text-anchor="middle" font-size="9" fill="#333">en us-east-1 → DNS Failover automático apunta</text>
+  <text x="1140" y="464" text-anchor="middle" font-size="9" fill="#333">a sa-east-1 · Clientes reconectan automáticamente.</text>
+
+  <!-- DR Databases -->
+  <rect x="955" y="510" width="180" height="60" rx="5" fill="#2d78c8"/>
+  <text x="1045" y="530" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">RDS Read Replica</text>
+  <text x="1045" y="546" text-anchor="middle" font-size="9" fill="#ddeeff">Cross-Region Replica</text>
+  <text x="1045" y="560" text-anchor="middle" font-size="9" fill="#ddeeff">Promote en DR</text>
+
+  <rect x="1155" y="510" width="170" height="60" rx="5" fill="#b85500"/>
+  <text x="1240" y="530" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">ElastiCache Redis</text>
+  <text x="1240" y="546" text-anchor="middle" font-size="9" fill="#ffe0cc">Global Datastore</text>
+  <text x="1240" y="560" text-anchor="middle" font-size="9" fill="#ffe0cc">Replicado</text>
+
+  <rect x="955" y="588" width="370" height="50" rx="5" fill="#438dd5"/>
+  <text x="1140" y="610" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">DynamoDB Global Tables (compartido)</text>
+  <text x="1140" y="626" text-anchor="middle" font-size="9" fill="#ddeeff">Auditoría disponible en ambas regiones automáticamente</text>
+
+  <!-- Monitoring -->
+  <rect x="955" y="655" width="370" height="80" rx="5" fill="#ede7f6" stroke="#6b2d8b" stroke-width="1"/>
+  <text x="1140" y="675" text-anchor="middle" font-size="10" font-weight="bold" fill="#6b2d8b">Observabilidad</text>
+  <text x="1140" y="693" text-anchor="middle" font-size="9" fill="#333">CloudWatch: métricas, logs, alarmas · X-Ray: trazas</text>
+  <text x="1140" y="709" text-anchor="middle" font-size="9" fill="#333">Grafana dashboards · Alertas P99 latencia &gt;500ms</text>
+  <text x="1140" y="725" text-anchor="middle" font-size="9" fill="#333">AWS Budgets: alertas de gasto · Cost Allocation Tags</text>
+
+  <!-- ══ CONNECTIONS ══ -->
+  <line x1="700" y1="250" x2="440" y2="268" stroke="#555" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="700" y1="250" x2="440" y2="748" stroke="#555" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
+  <!-- Replication arrow -->
+  <line x1="910" y1="540" x2="940" y2="540" stroke="#c62828" stroke-width="2" stroke-dasharray="6,3" marker-end="url(#arrow)"/>
+  <text x="920" y="530" font-size="9" fill="#c62828">Repl.</text>
+</svg>

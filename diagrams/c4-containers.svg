@@ -1,0 +1,386 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1200" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#555"/>
+    </marker>
+    <marker id="arrow-ext" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#999"/>
+    </marker>
+    <filter id="shadow">
+      <feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/>
+    </filter>
+  </defs>
+
+  <rect width="1600" height="1200" fill="#f8f9fa"/>
+
+  <!-- Title -->
+  <text x="800" y="36" text-anchor="middle" font-size="19" font-weight="bold" fill="#1a1a2e">C4 — Diagrama de Contenedores | BP Internet Banking</text>
+  <text x="800" y="54" text-anchor="middle" font-size="12" fill="#666">Nivel 2 · Vista técnica · Aplicaciones, servicios, bases de datos y mensajería</text>
+  <line x1="40" y1="64" x2="1560" y2="64" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ═══════════════════════ BOUNDARY BP System ═══════════════════════ -->
+  <rect x="220" y="80" width="980" height="1060" rx="10" fill="none" stroke="#1168bd" stroke-width="2" stroke-dasharray="8,4"/>
+  <text x="235" y="100" font-size="13" font-weight="bold" fill="#1168bd">BP Internet Banking [Software System]</text>
+
+  <!-- ──────────── FRONTENDS ──────────── -->
+  <!-- SPA Web -->
+  <g transform="translate(240,115)" filter="url(#shadow)">
+    <rect width="180" height="90" rx="6" fill="#438dd5"/>
+    <rect x="0" y="0" width="180" height="30" rx="6" fill="#2d78c8"/>
+    <rect x="0" y="22" width="180" height="8" fill="#2d78c8"/>
+    <text x="90" y="19" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">SPA Web</text>
+    <text x="90" y="40" text-anchor="middle" font-size="10" fill="#ddeeff">[Web Browser]</text>
+    <text x="90" y="56" text-anchor="middle" font-size="10" fill="#fff">Aplicación web SPA</text>
+    <text x="90" y="70" text-anchor="middle" font-size="10" fill="#fff">SSR para carga rápida</text>
+    <text x="90" y="84" text-anchor="middle" font-size="10" fill="#ddeeff">Next.js 14 / React 18</text>
+  </g>
+
+  <!-- App Móvil -->
+  <g transform="translate(460,115)" filter="url(#shadow)">
+    <rect width="180" height="90" rx="6" fill="#438dd5"/>
+    <rect x="0" y="0" width="180" height="30" rx="6" fill="#2d78c8"/>
+    <rect x="0" y="22" width="180" height="8" fill="#2d78c8"/>
+    <text x="90" y="19" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Mobile App</text>
+    <text x="90" y="40" text-anchor="middle" font-size="10" fill="#ddeeff">[Mobile App]</text>
+    <text x="90" y="56" text-anchor="middle" font-size="10" fill="#fff">iOS + Android. Onboarding</text>
+    <text x="90" y="70" text-anchor="middle" font-size="10" fill="#fff">facial + biometría local</text>
+    <text x="90" y="84" text-anchor="middle" font-size="10" fill="#ddeeff">Flutter 3.x / Dart</text>
+  </g>
+
+  <!-- CDN -->
+  <g transform="translate(240,240)" filter="url(#shadow)">
+    <rect width="180" height="80" rx="6" fill="#2d6b8b"/>
+    <rect x="0" y="0" width="180" height="28" rx="6" fill="#1a4f6b"/>
+    <rect x="0" y="20" width="180" height="8" fill="#1a4f6b"/>
+    <text x="90" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">CDN</text>
+    <text x="90" y="40" text-anchor="middle" font-size="10" fill="#cde">[CDN]</text>
+    <text x="90" y="55" text-anchor="middle" font-size="10" fill="#fff">Assets estáticos SPA.</text>
+    <text x="90" y="68" text-anchor="middle" font-size="10" fill="#cde">Amazon CloudFront</text>
+  </g>
+
+  <!-- ──────────── BFF LAYER ──────────── -->
+  <!-- BFF Web -->
+  <g transform="translate(240,355)" filter="url(#shadow)">
+    <rect width="180" height="90" rx="6" fill="#2d8b6b"/>
+    <rect x="0" y="0" width="180" height="30" rx="6" fill="#1a6b4f"/>
+    <rect x="0" y="22" width="180" height="8" fill="#1a6b4f"/>
+    <text x="90" y="19" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">BFF Web</text>
+    <text x="90" y="40" text-anchor="middle" font-size="10" fill="#cef">[BFF Container]</text>
+    <text x="90" y="56" text-anchor="middle" font-size="10" fill="#fff">Agrega respuestas</text>
+    <text x="90" y="70" text-anchor="middle" font-size="10" fill="#fff">para la SPA</text>
+    <text x="90" y="84" text-anchor="middle" font-size="10" fill="#cef">Node.js / Express</text>
+  </g>
+
+  <!-- BFF Mobile -->
+  <g transform="translate(460,355)" filter="url(#shadow)">
+    <rect width="180" height="90" rx="6" fill="#2d8b6b"/>
+    <rect x="0" y="0" width="180" height="30" rx="6" fill="#1a6b4f"/>
+    <rect x="0" y="22" width="180" height="8" fill="#1a6b4f"/>
+    <text x="90" y="19" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">BFF Mobile</text>
+    <text x="90" y="40" text-anchor="middle" font-size="10" fill="#cef">[BFF Container]</text>
+    <text x="90" y="56" text-anchor="middle" font-size="10" fill="#fff">Contratos optimizados</text>
+    <text x="90" y="70" text-anchor="middle" font-size="10" fill="#fff">para móvil</text>
+    <text x="90" y="84" text-anchor="middle" font-size="10" fill="#cef">Node.js / Express</text>
+  </g>
+
+  <!-- ──────────── API GATEWAY ──────────── -->
+  <g transform="translate(350,480)" filter="url(#shadow)">
+    <rect width="200" height="80" rx="6" fill="#6b2d8b"/>
+    <rect x="0" y="0" width="200" height="28" rx="6" fill="#4e1f6b"/>
+    <rect x="0" y="20" width="200" height="8" fill="#4e1f6b"/>
+    <text x="100" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">API Gateway</text>
+    <text x="100" y="40" text-anchor="middle" font-size="10" fill="#e8d0ff">[API Gateway]</text>
+    <text x="100" y="56" text-anchor="middle" font-size="10" fill="#fff">Routing · Throttling</text>
+    <text x="100" y="70" text-anchor="middle" font-size="10" fill="#e8d0ff">AWS API GW + Kong</text>
+  </g>
+
+  <!-- ──────────── MICROSERVICIOS ──────────── -->
+  <!-- Auth Service -->
+  <g transform="translate(240,600)" filter="url(#shadow)">
+    <rect width="150" height="90" rx="6" fill="#2e7d32"/>
+    <rect x="0" y="0" width="150" height="28" rx="6" fill="#1b5e20"/>
+    <rect x="0" y="20" width="150" height="8" fill="#1b5e20"/>
+    <text x="75" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Auth Service</text>
+    <text x="75" y="40" text-anchor="middle" font-size="9" fill="#c8e6c9">[Microservice]</text>
+    <text x="75" y="56" text-anchor="middle" font-size="9" fill="#fff">OAuth2, tokens</text>
+    <text x="75" y="70" text-anchor="middle" font-size="9" fill="#fff">refresh, sesiones</text>
+    <text x="75" y="83" text-anchor="middle" font-size="9" fill="#c8e6c9">NestJS / Node.js</text>
+  </g>
+
+  <!-- Customer Service -->
+  <g transform="translate(405,600)" filter="url(#shadow)">
+    <rect width="150" height="90" rx="6" fill="#2e7d32"/>
+    <rect x="0" y="0" width="150" height="28" rx="6" fill="#1b5e20"/>
+    <rect x="0" y="20" width="150" height="8" fill="#1b5e20"/>
+    <text x="75" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Customer Service</text>
+    <text x="75" y="40" text-anchor="middle" font-size="9" fill="#c8e6c9">[Microservice]</text>
+    <text x="75" y="56" text-anchor="middle" font-size="9" fill="#fff">Facade: Core +</text>
+    <text x="75" y="70" text-anchor="middle" font-size="9" fill="#fff">Complementario</text>
+    <text x="75" y="83" text-anchor="middle" font-size="9" fill="#c8e6c9">Spring Boot / Java</text>
+  </g>
+
+  <!-- Account Service -->
+  <g transform="translate(570,600)" filter="url(#shadow)">
+    <rect width="150" height="90" rx="6" fill="#2e7d32"/>
+    <rect x="0" y="0" width="150" height="28" rx="6" fill="#1b5e20"/>
+    <rect x="0" y="20" width="150" height="8" fill="#1b5e20"/>
+    <text x="75" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Account Service</text>
+    <text x="75" y="40" text-anchor="middle" font-size="9" fill="#c8e6c9">[Microservice]</text>
+    <text x="75" y="56" text-anchor="middle" font-size="9" fill="#fff">Saldos, productos</text>
+    <text x="75" y="70" text-anchor="middle" font-size="9" fill="#fff">del cliente</text>
+    <text x="75" y="83" text-anchor="middle" font-size="9" fill="#c8e6c9">Spring Boot / Java</text>
+  </g>
+
+  <!-- Movements Service -->
+  <g transform="translate(735,600)" filter="url(#shadow)">
+    <rect width="150" height="90" rx="6" fill="#2e7d32"/>
+    <rect x="0" y="0" width="150" height="28" rx="6" fill="#1b5e20"/>
+    <rect x="0" y="20" width="150" height="8" fill="#1b5e20"/>
+    <text x="75" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Movements Service</text>
+    <text x="75" y="40" text-anchor="middle" font-size="9" fill="#c8e6c9">[Microservice]</text>
+    <text x="75" y="56" text-anchor="middle" font-size="9" fill="#fff">Historial CQRS</text>
+    <text x="75" y="70" text-anchor="middle" font-size="9" fill="#fff">read/write split</text>
+    <text x="75" y="83" text-anchor="middle" font-size="9" fill="#c8e6c9">Spring Boot / Java</text>
+  </g>
+
+  <!-- Transfer Service -->
+  <g transform="translate(240,730)" filter="url(#shadow)">
+    <rect width="150" height="90" rx="6" fill="#2e7d32"/>
+    <rect x="0" y="0" width="150" height="28" rx="6" fill="#1b5e20"/>
+    <rect x="0" y="20" width="150" height="8" fill="#1b5e20"/>
+    <text x="75" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Transfer Service</text>
+    <text x="75" y="40" text-anchor="middle" font-size="9" fill="#c8e6c9">[Microservice]</text>
+    <text x="75" y="56" text-anchor="middle" font-size="9" fill="#fff">Saga: transferencias</text>
+    <text x="75" y="70" text-anchor="middle" font-size="9" fill="#fff">cuentas propias</text>
+    <text x="75" y="83" text-anchor="middle" font-size="9" fill="#c8e6c9">Spring Boot / Java</text>
+  </g>
+
+  <!-- Payment Service -->
+  <g transform="translate(405,730)" filter="url(#shadow)">
+    <rect width="150" height="90" rx="6" fill="#2e7d32"/>
+    <rect x="0" y="0" width="150" height="28" rx="6" fill="#1b5e20"/>
+    <rect x="0" y="20" width="150" height="8" fill="#1b5e20"/>
+    <text x="75" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Payment Service</text>
+    <text x="75" y="40" text-anchor="middle" font-size="9" fill="#c8e6c9">[Microservice]</text>
+    <text x="75" y="56" text-anchor="middle" font-size="9" fill="#fff">Saga: pagos</text>
+    <text x="75" y="70" text-anchor="middle" font-size="9" fill="#fff">ACH / SWIFT</text>
+    <text x="75" y="83" text-anchor="middle" font-size="9" fill="#c8e6c9">Spring Boot / Java</text>
+  </g>
+
+  <!-- Onboarding Service -->
+  <g transform="translate(570,730)" filter="url(#shadow)">
+    <rect width="150" height="90" rx="6" fill="#2e7d32"/>
+    <rect x="0" y="0" width="150" height="28" rx="6" fill="#1b5e20"/>
+    <rect x="0" y="20" width="150" height="8" fill="#1b5e20"/>
+    <text x="75" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Onboarding Service</text>
+    <text x="75" y="40" text-anchor="middle" font-size="9" fill="#c8e6c9">[Microservice]</text>
+    <text x="75" y="56" text-anchor="middle" font-size="9" fill="#fff">Biometría + registro</text>
+    <text x="75" y="70" text-anchor="middle" font-size="9" fill="#fff">de nuevo cliente</text>
+    <text x="75" y="83" text-anchor="middle" font-size="9" fill="#c8e6c9">NestJS / Node.js</text>
+  </g>
+
+  <!-- Notification Service -->
+  <g transform="translate(735,730)" filter="url(#shadow)">
+    <rect width="150" height="90" rx="6" fill="#2e7d32"/>
+    <rect x="0" y="0" width="150" height="28" rx="6" fill="#1b5e20"/>
+    <rect x="0" y="20" width="150" height="8" fill="#1b5e20"/>
+    <text x="75" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Notification Service</text>
+    <text x="75" y="40" text-anchor="middle" font-size="9" fill="#c8e6c9">[Microservice]</text>
+    <text x="75" y="56" text-anchor="middle" font-size="9" fill="#fff">Router multicanal</text>
+    <text x="75" y="70" text-anchor="middle" font-size="9" fill="#fff">SNS · SES · Twilio</text>
+    <text x="75" y="83" text-anchor="middle" font-size="9" fill="#c8e6c9">NestJS / Node.js</text>
+  </g>
+
+  <!-- Audit Service -->
+  <g transform="translate(900,730)" filter="url(#shadow)">
+    <rect width="150" height="90" rx="6" fill="#2e7d32"/>
+    <rect x="0" y="0" width="150" height="28" rx="6" fill="#1b5e20"/>
+    <rect x="0" y="20" width="150" height="8" fill="#1b5e20"/>
+    <text x="75" y="18" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Audit Service</text>
+    <text x="75" y="40" text-anchor="middle" font-size="9" fill="#c8e6c9">[Microservice]</text>
+    <text x="75" y="56" text-anchor="middle" font-size="9" fill="#fff">Event Sourcing</text>
+    <text x="75" y="70" text-anchor="middle" font-size="9" fill="#fff">append-only log</text>
+    <text x="75" y="83" text-anchor="middle" font-size="9" fill="#c8e6c9">NestJS / Node.js</text>
+  </g>
+
+  <!-- ──────────── DATOS ──────────── -->
+  <!-- Main DB -->
+  <g transform="translate(240,870)" filter="url(#shadow)">
+    <ellipse cx="75" cy="20" rx="75" ry="16" fill="#2d78c8"/>
+    <rect x="0" y="20" width="150" height="50" fill="#2d78c8"/>
+    <ellipse cx="75" cy="70" rx="75" ry="16" fill="#1a5a9a"/>
+    <text x="75" y="42" text-anchor="middle" font-size="9" fill="#fff">RDS PostgreSQL</text>
+    <text x="75" y="56" text-anchor="middle" font-size="9" fill="#ddeeff">Multi-AZ</text>
+    <text x="75" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">BD Principal</text>
+  </g>
+
+  <!-- Read Replica DB -->
+  <g transform="translate(410,870)" filter="url(#shadow)">
+    <ellipse cx="75" cy="20" rx="75" ry="16" fill="#2d78c8"/>
+    <rect x="0" y="20" width="150" height="50" fill="#2d78c8"/>
+    <ellipse cx="75" cy="70" rx="75" ry="16" fill="#1a5a9a"/>
+    <text x="75" y="42" text-anchor="middle" font-size="9" fill="#fff">RDS PostgreSQL</text>
+    <text x="75" y="56" text-anchor="middle" font-size="9" fill="#ddeeff">Read Replica</text>
+    <text x="75" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">BD Lectura</text>
+  </g>
+
+  <!-- Audit DB -->
+  <g transform="translate(580,870)" filter="url(#shadow)">
+    <ellipse cx="75" cy="20" rx="75" ry="16" fill="#2d78c8"/>
+    <rect x="0" y="20" width="150" height="50" fill="#2d78c8"/>
+    <ellipse cx="75" cy="70" rx="75" ry="16" fill="#1a5a9a"/>
+    <text x="75" y="42" text-anchor="middle" font-size="9" fill="#fff">Amazon DynamoDB</text>
+    <text x="75" y="56" text-anchor="middle" font-size="9" fill="#ddeeff">Append-Only</text>
+    <text x="75" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">BD Auditoría</text>
+  </g>
+
+  <!-- Cache -->
+  <g transform="translate(750,870)" filter="url(#shadow)">
+    <ellipse cx="75" cy="20" rx="75" ry="16" fill="#e06c00"/>
+    <rect x="0" y="20" width="150" height="50" fill="#e06c00"/>
+    <ellipse cx="75" cy="70" rx="75" ry="16" fill="#b85500"/>
+    <text x="75" y="42" text-anchor="middle" font-size="9" fill="#fff">ElastiCache Redis</text>
+    <text x="75" y="56" text-anchor="middle" font-size="9" fill="#ffe0cc">Cache-Aside</text>
+    <text x="75" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Caché Distribuida</text>
+  </g>
+
+  <!-- Event Bus -->
+  <g transform="translate(920,870)" filter="url(#shadow)">
+    <rect width="160" height="70" rx="30" fill="#f0a500"/>
+    <text x="80" y="26" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Bus de Eventos</text>
+    <text x="80" y="41" text-anchor="middle" font-size="9" fill="#fff">[Message Bus]</text>
+    <text x="80" y="56" text-anchor="middle" font-size="9" fill="#fff">Amazon SQS + SNS</text>
+  </g>
+
+  <!-- ═══════════════════════ SISTEMAS EXTERNOS ═══════════════════════ -->
+  <!-- Core Bancario -->
+  <g transform="translate(1250,115)" filter="url(#shadow)">
+    <rect width="180" height="80" rx="6" fill="#999"/>
+    <rect x="0" y="0" width="180" height="28" rx="6" fill="#777"/>
+    <rect x="0" y="20" width="180" height="8" fill="#777"/>
+    <text x="90" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Core Bancario</text>
+    <text x="90" y="42" text-anchor="middle" font-size="10" fill="#eee">[Sistema Externo]</text>
+    <text x="90" y="57" text-anchor="middle" font-size="10" fill="#eee">Fuente de verdad</text>
+    <text x="90" y="70" text-anchor="middle" font-size="10" fill="#eee">clientes y cuentas</text>
+  </g>
+
+  <!-- Sistema Complementario -->
+  <g transform="translate(1250,230)" filter="url(#shadow)">
+    <rect width="180" height="80" rx="6" fill="#999"/>
+    <rect x="0" y="0" width="180" height="28" rx="6" fill="#777"/>
+    <rect x="0" y="20" width="180" height="8" fill="#777"/>
+    <text x="90" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Sist. Complementario</text>
+    <text x="90" y="42" text-anchor="middle" font-size="10" fill="#eee">[Sistema Externo]</text>
+    <text x="90" y="57" text-anchor="middle" font-size="10" fill="#eee">Datos detallados</text>
+    <text x="90" y="70" text-anchor="middle" font-size="10" fill="#eee">del cliente</text>
+  </g>
+
+  <!-- AWS Cognito -->
+  <g transform="translate(1250,345)" filter="url(#shadow)">
+    <rect width="180" height="80" rx="6" fill="#999"/>
+    <rect x="0" y="0" width="180" height="28" rx="6" fill="#777"/>
+    <rect x="0" y="20" width="180" height="8" fill="#777"/>
+    <text x="90" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">AWS Cognito</text>
+    <text x="90" y="42" text-anchor="middle" font-size="10" fill="#eee">[Identity Provider]</text>
+    <text x="90" y="57" text-anchor="middle" font-size="10" fill="#eee">OAuth2 / OIDC</text>
+    <text x="90" y="70" text-anchor="middle" font-size="10" fill="#eee">MFA · Tokens</text>
+  </g>
+
+  <!-- Rekognition -->
+  <g transform="translate(1250,460)" filter="url(#shadow)">
+    <rect width="180" height="80" rx="6" fill="#999"/>
+    <rect x="0" y="0" width="180" height="28" rx="6" fill="#777"/>
+    <rect x="0" y="20" width="180" height="8" fill="#777"/>
+    <text x="90" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">AWS Rekognition</text>
+    <text x="90" y="42" text-anchor="middle" font-size="10" fill="#eee">[Biometría]</text>
+    <text x="90" y="57" text-anchor="middle" font-size="10" fill="#eee">Liveness check</text>
+    <text x="90" y="70" text-anchor="middle" font-size="10" fill="#eee">Facial comparison</text>
+  </g>
+
+  <!-- ACH + SWIFT -->
+  <g transform="translate(1250,575)" filter="url(#shadow)">
+    <rect width="180" height="80" rx="6" fill="#999"/>
+    <rect x="0" y="0" width="180" height="28" rx="6" fill="#777"/>
+    <rect x="0" y="20" width="180" height="8" fill="#777"/>
+    <text x="90" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">ACH / SWIFT</text>
+    <text x="90" y="42" text-anchor="middle" font-size="10" fill="#eee">[Redes de Pago]</text>
+    <text x="90" y="57" text-anchor="middle" font-size="10" fill="#eee">Pagos interbancarios</text>
+    <text x="90" y="70" text-anchor="middle" font-size="10" fill="#eee">nacionales e internac.</text>
+  </g>
+
+  <!-- Notificaciones -->
+  <g transform="translate(1250,690)" filter="url(#shadow)">
+    <rect width="180" height="90" rx="6" fill="#999"/>
+    <rect x="0" y="0" width="180" height="28" rx="6" fill="#777"/>
+    <rect x="0" y="20" width="180" height="8" fill="#777"/>
+    <text x="90" y="18" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">Notificaciones</text>
+    <text x="90" y="42" text-anchor="middle" font-size="10" fill="#eee">[Servicios Externos]</text>
+    <text x="90" y="58" text-anchor="middle" font-size="10" fill="#eee">SNS · SES · Twilio</text>
+    <text x="90" y="73" text-anchor="middle" font-size="10" fill="#eee">Push · Email · SMS</text>
+    <text x="90" y="86" text-anchor="middle" font-size="10" fill="#eee">WhatsApp</text>
+  </g>
+
+  <!-- ═══════════════════════ FLECHAS INTERNAS ═══════════════════════ -->
+  <!-- SPA → CDN → BFF Web -->
+  <line x1="330" y1="205" x2="330" y2="240" stroke="#438dd5" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="330" y1="320" x2="330" y2="355" stroke="#438dd5" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <!-- Mobile → BFF Mobile -->
+  <line x1="550" y1="205" x2="550" y2="355" stroke="#438dd5" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <!-- BFF Web → API GW -->
+  <line x1="330" y1="445" x2="420" y2="480" stroke="#2d8b6b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <!-- BFF Mobile → API GW -->
+  <line x1="550" y1="445" x2="480" y2="480" stroke="#2d8b6b" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <!-- API GW → Microservicios -->
+  <line x1="420" y1="560" x2="315" y2="600" stroke="#6b2d8b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="440" y1="560" x2="480" y2="600" stroke="#6b2d8b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="460" y1="560" x2="645" y2="600" stroke="#6b2d8b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="480" y1="560" x2="810" y2="600" stroke="#6b2d8b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="430" y1="560" x2="315" y2="730" stroke="#6b2d8b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="450" y1="560" x2="480" y2="730" stroke="#6b2d8b" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="455" y1="560" x2="645" y2="730" stroke="#6b2d8b" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <!-- Microservicios → Event Bus -->
+  <line x1="315" y1="820" x2="1000" y2="870" stroke="#2e7d32" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <line x1="480" y1="820" x2="1020" y2="870" stroke="#2e7d32" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+  <line x1="810" y1="820" x2="1000" y2="875" stroke="#2e7d32" stroke-width="1" stroke-dasharray="5,3" marker-end="url(#arrow)"/>
+
+  <!-- Event Bus → Audit / Notification -->
+  <line x1="975" y1="875" x2="975" y2="820" stroke="#f0a500" stroke-width="1.5" marker-end="url(#arrow)"/>
+  <line x1="985" y1="875" x2="810" y2="820" stroke="#f0a500" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+  <!-- ═══════════════════════ FLECHAS EXTERNAS ═══════════════════════ -->
+  <!-- Auth → Cognito -->
+  <line x1="390" y1="645" x2="1250" y2="385" stroke="#999" stroke-width="1.2" stroke-dasharray="6,3" marker-end="url(#arrow-ext)"/>
+  <!-- Customer → Core -->
+  <line x1="555" y1="640" x2="1250" y2="155" stroke="#999" stroke-width="1.2" stroke-dasharray="6,3" marker-end="url(#arrow-ext)"/>
+  <!-- Customer → Complementario -->
+  <line x1="555" y1="650" x2="1250" y2="270" stroke="#999" stroke-width="1.2" stroke-dasharray="6,3" marker-end="url(#arrow-ext)"/>
+  <!-- Onboarding → Rekognition -->
+  <line x1="720" y1="770" x2="1250" y2="500" stroke="#999" stroke-width="1.2" stroke-dasharray="6,3" marker-end="url(#arrow-ext)"/>
+  <!-- Payment → ACH/SWIFT -->
+  <line x1="555" y1="775" x2="1250" y2="615" stroke="#999" stroke-width="1.2" stroke-dasharray="6,3" marker-end="url(#arrow-ext)"/>
+  <!-- Notification → Ext Notif -->
+  <line x1="885" y1="775" x2="1250" y2="735" stroke="#999" stroke-width="1.2" stroke-dasharray="6,3" marker-end="url(#arrow-ext)"/>
+
+  <!-- Movements → Read DB -->
+  <line x1="810" y1="690" x2="485" y2="870" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <!-- Customer → Cache -->
+  <line x1="480" y1="690" x2="825" y2="870" stroke="#e06c00" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
+
+  <!-- Legend -->
+  <rect x="40" y="1140" width="680" height="50" rx="6" fill="#fff" stroke="#ddd"/>
+  <rect x="60" y="1155" width="16" height="12" rx="2" fill="#2e7d32"/>
+  <text x="84" y="1165" font-size="10" fill="#333">Microservicio</text>
+  <rect x="160" y="1155" width="16" height="12" rx="2" fill="#6b2d8b"/>
+  <text x="184" y="1165" font-size="10" fill="#333">API Gateway</text>
+  <rect x="270" y="1155" width="16" height="12" rx="2" fill="#2d8b6b"/>
+  <text x="294" y="1165" font-size="10" fill="#333">BFF</text>
+  <rect x="330" y="1155" width="16" height="12" rx="2" fill="#999"/>
+  <text x="354" y="1165" font-size="10" fill="#333">Sistema Externo</text>
+  <rect x="450" y="1155" width="16" height="12" rx="2" fill="#438dd5"/>
+  <text x="474" y="1165" font-size="10" fill="#333">Frontend / CDN</text>
+  <line x1="60" y1="1178" x2="80" y2="1178" stroke="#555" stroke-width="1.5"/>
+  <text x="86" y="1182" font-size="10" fill="#333">Sync HTTPS</text>
+  <line x1="160" y1="1178" x2="180" y2="1178" stroke="#999" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="186" y="1182" font-size="10" fill="#333">Async / Externo</text>
+</svg>

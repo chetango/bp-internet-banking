@@ -1,0 +1,152 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 780" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#555"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2e7d32"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#e06c00"/>
+    </marker>
+    <filter id="shadow"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.1"/></filter>
+  </defs>
+  <rect width="1300" height="780" fill="#f8f9fa"/>
+
+  <text x="650" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1a2e">Patrón Cache-Aside | Persistencia de Clientes Frecuentes</text>
+  <text x="650" y="52" text-anchor="middle" font-size="11" fill="#666">Redis como caché de lectura — protege al Core bancario de sobrecarga y reduce latencia promedio de 800ms a &lt;50ms</text>
+  <line x1="40" y1="62" x2="1260" y2="62" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ══ HAPPY PATH ══ -->
+  <text x="55" y="90" font-size="13" font-weight="bold" fill="#1168bd">Escenario A — Cache Hit (cliente frecuente)</text>
+
+  <!-- Step boxes -->
+  <g transform="translate(55,100)">
+    <!-- Step 1 -->
+    <rect x="0" y="0" width="220" height="60" rx="5" fill="#e3f2fd" stroke="#1168bd" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="110" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#1168bd">1. API Gateway</text>
+    <text x="110" y="34" text-anchor="middle" font-size="9" fill="#333">Recibe GET /customer/{id}</text>
+    <text x="110" y="48" text-anchor="middle" font-size="9" fill="#333">con JWT válido</text>
+
+    <!-- Arrow 1→2 -->
+    <line x1="220" y1="30" x2="260" y2="30" stroke="#1168bd" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <!-- Step 2 -->
+    <rect x="260" y="0" width="220" height="60" rx="5" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="370" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">2. Customer Service</text>
+    <text x="370" y="34" text-anchor="middle" font-size="9" fill="#333">Cache Manager consulta</text>
+    <text x="370" y="48" text-anchor="middle" font-size="9" fill="#333">Redis: GET customer:{id}</text>
+
+    <!-- Arrow 2→3 -->
+    <line x1="480" y1="30" x2="520" y2="30" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#arrow-green)"/>
+
+    <!-- Step 3 -->
+    <rect x="520" y="0" width="220" height="60" rx="5" fill="#fff8e1" stroke="#e06c00" stroke-width="2" filter="url(#shadow)"/>
+    <text x="630" y="18" text-anchor="middle" font-size="10" font-weight="bold" fill="#e06c00">3. Redis (ElastiCache)</text>
+    <text x="630" y="34" text-anchor="middle" font-size="9" fill="#333">HIT ✓ Retorna datos</text>
+    <text x="630" y="48" text-anchor="middle" font-size="9" fill="#333">del cliente desde caché</text>
+
+    <!-- Arrow 3→4 (response) -->
+    <line x1="520" y1="42" x2="480" y2="42" stroke="#e06c00" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
+
+    <!-- Step 4 -->
+    <rect x="260" y="75" width="220" height="50" rx="5" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="370" y="95" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">4. Customer Service</text>
+    <text x="370" y="110" text-anchor="middle" font-size="9" fill="#333">Retorna respuesta al cliente</text>
+
+    <!-- Arrow back to gateway -->
+    <line x1="260" y1="100" x2="220" y2="100" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <rect x="0" y="75" width="220" height="50" rx="5" fill="#e3f2fd" stroke="#1168bd" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="110" y="95" text-anchor="middle" font-size="10" font-weight="bold" fill="#1168bd">5. API Gateway</text>
+    <text x="110" y="110" text-anchor="middle" font-size="9" fill="#333">Responde al cliente &lt;50ms ⚡</text>
+
+    <text x="790" y="18" font-size="10" font-weight="bold" fill="#2e7d32">Latencia: ~30-50ms</text>
+    <text x="790" y="34" font-size="9" fill="#555">TTL: 5 minutos para datos</text>
+    <text x="790" y="48" font-size="9" fill="#555">básicos del cliente.</text>
+    <text x="790" y="64" font-size="9" fill="#555">TTL más corto para saldos</text>
+    <text x="790" y="78" font-size="9" fill="#555">(30s) por sensibilidad.</text>
+  </g>
+
+  <!-- ══ CACHE MISS PATH ══ -->
+  <text x="55" y="285" font-size="13" font-weight="bold" fill="#c62828">Escenario B — Cache Miss (primer acceso o TTL expirado)</text>
+  <g transform="translate(55,295)">
+    <!-- Step 1 -->
+    <rect x="0" y="0" width="160" height="55" rx="5" fill="#e3f2fd" stroke="#1168bd" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="80" y="16" text-anchor="middle" font-size="10" font-weight="bold" fill="#1168bd">1. API Gateway</text>
+    <text x="80" y="30" text-anchor="middle" font-size="9" fill="#333">GET /customer/{id}</text>
+
+    <line x1="160" y1="28" x2="200" y2="28" stroke="#1168bd" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <!-- Step 2 -->
+    <rect x="200" y="0" width="160" height="55" rx="5" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="280" y="16" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">2. Customer Svc</text>
+    <text x="280" y="30" text-anchor="middle" font-size="9" fill="#333">Redis → MISS ✗</text>
+
+    <line x1="360" y1="28" x2="400" y2="28" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <!-- Step 3 MISS -->
+    <rect x="400" y="0" width="160" height="55" rx="5" fill="#ffebee" stroke="#c62828" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="480" y="16" text-anchor="middle" font-size="10" font-weight="bold" fill="#c62828">3. Redis MISS</text>
+    <text x="480" y="30" text-anchor="middle" font-size="9" fill="#333">No existe key</text>
+    <text x="480" y="44" text-anchor="middle" font-size="9" fill="#333">customer:{id}</text>
+
+    <!-- Arrow to Core -->
+    <line x1="360" y1="40" x2="400" y2="40" stroke="#c62828" stroke-width="1.5" stroke-dasharray="4,2"/>
+    <line x1="280" y1="55" x2="280" y2="85" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#arrow)"/>
+
+    <!-- Step 4: Facade calls Core + Enrich -->
+    <rect x="160" y="85" width="380" height="70" rx="5" fill="#e8f5e9" stroke="#2e7d32" stroke-width="2" filter="url(#shadow)"/>
+    <text x="350" y="103" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">4. Customer Facade (Patrón Facade)</text>
+    <text x="350" y="119" text-anchor="middle" font-size="9" fill="#333">Llama en paralelo: Core Bancario (datos básicos)</text>
+    <text x="350" y="133" text-anchor="middle" font-size="9" fill="#333">+ Sistema Complementario (datos detalle). Combina respuesta.</text>
+
+    <!-- Arrow to Core External -->
+    <line x1="540" y1="120" x2="600" y2="120" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+    <rect x="600" y="90" width="170" height="60" rx="5" fill="#e0e0e0" stroke="#999" stroke-width="1" filter="url(#shadow)"/>
+    <text x="685" y="108" text-anchor="middle" font-size="10" font-weight="bold" fill="#444">Core Bancario</text>
+    <text x="685" y="122" text-anchor="middle" font-size="9" fill="#555">[Sistema Externo]</text>
+    <text x="685" y="136" text-anchor="middle" font-size="9" fill="#555">REST/HTTPS ~500ms</text>
+
+    <!-- Step 5: Write to Redis -->
+    <line x1="280" y1="155" x2="280" y2="185" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <rect x="160" y="185" width="380" height="60" rx="5" fill="#fff8e1" stroke="#e06c00" stroke-width="2" filter="url(#shadow)"/>
+    <text x="350" y="205" text-anchor="middle" font-size="10" font-weight="bold" fill="#e06c00">5. Cache Write (Cache-Aside)</text>
+    <text x="350" y="221" text-anchor="middle" font-size="9" fill="#333">SET customer:{id} {data} EX 300 (5 min)</text>
+    <text x="350" y="237" text-anchor="middle" font-size="9" fill="#333">Actualización asíncrona — no bloquea la respuesta al cliente.</text>
+
+    <!-- Redis box -->
+    <line x1="540" y1="215" x2="600" y2="215" stroke="#e06c00" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <rect x="600" y="185" width="170" height="60" rx="5" fill="#fff8e1" stroke="#e06c00" stroke-width="2" filter="url(#shadow)"/>
+    <text x="685" y="205" text-anchor="middle" font-size="10" font-weight="bold" fill="#e06c00">Redis</text>
+    <text x="685" y="221" text-anchor="middle" font-size="9" fill="#555">ElastiCache</text>
+    <text x="685" y="237" text-anchor="middle" font-size="9" fill="#555">Actualizado ✓</text>
+
+    <!-- Step 6: Return -->
+    <line x1="280" y1="245" x2="280" y2="270" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#arrow)"/>
+    <rect x="160" y="270" width="380" height="45" rx="5" fill="#e3f2fd" stroke="#1168bd" stroke-width="1.5" filter="url(#shadow)"/>
+    <text x="350" y="290" text-anchor="middle" font-size="10" font-weight="bold" fill="#1168bd">6. Respuesta al cliente</text>
+    <text x="350" y="305" text-anchor="middle" font-size="9" fill="#333">Latencia ~600-800ms (solo en el MISS) — próxima consulta será HIT</text>
+  </g>
+
+  <!-- ══ INVALIDATION ══ -->
+  <text x="55" y="670" font-size="13" font-weight="bold" fill="#6b2d8b">Escenario C — Invalidación de Caché (Observer Pattern)</text>
+  <g transform="translate(55,680)">
+    <rect x="0" y="0" width="1200" height="55" rx="5" fill="#ede7f6" stroke="#6b2d8b" stroke-width="1.5"/>
+    <text x="20" y="18" font-size="10" font-weight="bold" fill="#6b2d8b">Cuando el Core registra un cambio en datos del cliente →</text>
+    <text x="20" y="34" font-size="9" fill="#333">Core publica evento CustomerDataUpdated → SQS → Customer Service (Observer) consume evento → DEL customer:{id} en Redis.</text>
+    <text x="20" y="50" font-size="9" fill="#555">Garantiza que la próxima consulta siempre traiga datos frescos. TTL actúa como fallback si el evento falla.</text>
+  </g>
+
+  <!-- Legend -->
+  <rect x="55" y="750" width="640" height="24" rx="4" fill="#fff" stroke="#ddd"/>
+  <rect x="70" y="757" width="14" height="10" rx="2" fill="#e06c00"/>
+  <text x="90" y="767" font-size="9" fill="#333">Redis / Cache</text>
+  <rect x="165" y="757" width="14" height="10" rx="2" fill="#2e7d32"/>
+  <text x="185" y="767" font-size="9" fill="#333">Customer Service</text>
+  <rect x="290" y="757" width="14" height="10" rx="2" fill="#1168bd"/>
+  <text x="310" y="767" font-size="9" fill="#333">API Gateway</text>
+  <rect x="390" y="757" width="14" height="10" rx="2" fill="#999"/>
+  <text x="410" y="767" font-size="9" fill="#333">Sistema Externo</text>
+  <rect x="510" y="757" width="14" height="10" rx="2" fill="#6b2d8b"/>
+  <text x="530" y="767" font-size="9" fill="#333">Observer / Invalidación</text>
+</svg>
