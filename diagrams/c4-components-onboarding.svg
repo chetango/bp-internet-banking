@@ -1,154 +1,233 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1300 750" font-family="Segoe UI, Arial, sans-serif">
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" font-family="Segoe UI, Arial, sans-serif">
   <defs>
-    <marker id="arrow" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
       <polygon points="0 0, 10 3.5, 0 7" fill="#555"/>
     </marker>
-    <filter id="shadow"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.12"/></filter>
+    <marker id="arrow-red" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#c62828"/>
+    </marker>
+    <marker id="arrow-orange" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#f0a500"/>
+    </marker>
+    <filter id="shadow"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.10"/></filter>
   </defs>
-  <rect width="1300" height="750" fill="#f8f9fa"/>
 
-  <text x="650" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1a2e">C4 — Componentes: Onboarding Service | Biometría + OAuth2</text>
-  <text x="650" y="52" text-anchor="middle" font-size="11" fill="#666">Flujo de vinculación de nuevo cliente con reconocimiento facial — AWS Rekognition + Cognito</text>
-  <line x1="40" y1="62" x2="1260" y2="62" stroke="#ddd" stroke-width="1"/>
+  <rect width="1400" height="900" fill="#f8f9fa"/>
 
-  <!-- Boundary -->
-  <rect x="40" y="78" width="740" height="520" rx="8" fill="none" stroke="#2e7d32" stroke-width="2" stroke-dasharray="7,3"/>
-  <text x="56" y="98" font-size="12" font-weight="bold" fill="#2e7d32">Onboarding Service [Microservice · NestJS]</text>
+  <!-- Title -->
+  <text x="700" y="32" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1a2e">C4 — Componentes: Onboarding Service | Biometría + Circuit Breaker</text>
+  <text x="700" y="50" text-anchor="middle" font-size="11" fill="#666">Flujo de vinculación de nuevo cliente — AWS Rekognition + Cognito + Resilience4j</text>
+  <line x1="40" y1="60" x2="1360" y2="60" stroke="#ddd" stroke-width="1"/>
 
-  <!-- Onboarding Controller -->
-  <g transform="translate(60,112)" filter="url(#shadow)">
-    <rect width="700" height="65" rx="5" fill="#85bbf0"/>
-    <rect x="0" y="0" width="700" height="24" rx="5" fill="#5a9fd4"/>
-    <rect x="0" y="16" width="700" height="8" fill="#5a9fd4"/>
-    <text x="350" y="14" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Onboarding Controller</text>
-    <text x="350" y="34" text-anchor="middle" font-size="9" fill="#333">[Component · REST API]</text>
-    <text x="350" y="50" text-anchor="middle" font-size="9" fill="#333">Orquesta el flujo completo de vinculación. Exposición de endpoints: POST /onboarding/start · /facial-verify · /credentials · /complete</text>
+  <!-- BOUNDARY -->
+  <rect x="40" y="70" width="860" height="600" rx="8" fill="none" stroke="#2e7d32" stroke-width="2" stroke-dasharray="7,3"/>
+  <text x="56" y="88" font-size="12" font-weight="bold" fill="#2e7d32">Onboarding Service [Microservice · NestJS]</text>
+
+  <!-- ROW 0: Onboarding Controller (full width) y=98, h=68 -->
+  <g transform="translate(60,98)" filter="url(#shadow)">
+    <rect width="820" height="68" rx="5" fill="#85bbf0"/>
+    <rect x="0" y="0" width="820" height="24" rx="5" fill="#5a9fd4"/>
+    <rect x="0" y="17" width="820" height="7" fill="#5a9fd4"/>
+    <text x="410" y="15" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Onboarding Controller</text>
+    <text x="410" y="35" text-anchor="middle" font-size="9" fill="#333">[Component · REST API]</text>
+    <text x="410" y="52" text-anchor="middle" font-size="9" fill="#333">Orquesta el flujo de vinculación:  POST /v1/onboarding/start  ·  /facial-verify  ·  /credentials  ·  /complete</text>
   </g>
 
-  <!-- Liveness Check -->
-  <g transform="translate(60,210)" filter="url(#shadow)">
-    <rect width="210" height="100" rx="5" fill="#85bbf0"/>
-    <rect x="0" y="0" width="210" height="26" rx="5" fill="#5a9fd4"/>
-    <rect x="0" y="18" width="210" height="8" fill="#5a9fd4"/>
-    <text x="105" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Liveness Check</text>
-    <text x="105" y="38" text-anchor="middle" font-size="9" fill="#333">[Component]</text>
-    <text x="105" y="54" text-anchor="middle" font-size="9" fill="#333">Crea sesión de liveness en</text>
-    <text x="105" y="68" text-anchor="middle" font-size="9" fill="#333">Rekognition. Verifica que</text>
-    <text x="105" y="82" text-anchor="middle" font-size="9" fill="#333">es una persona real (anti-spoofing).</text>
+  <!-- VERTICAL ARROWS: Controller -> Row1 components  (bottom of controller = 98+68=166) -->
+  <line x1="155" y1="166" x2="155" y2="194" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="365" y1="166" x2="365" y2="194" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="575" y1="166" x2="575" y2="194" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="785" y1="166" x2="785" y2="194" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <!-- ROW 1: 4 component boxes  y=194, h=110  gap=20 -->
+  <!-- Liveness: x=60 w=190 -->
+  <g transform="translate(60,194)" filter="url(#shadow)">
+    <rect width="190" height="110" rx="5" fill="#85bbf0"/>
+    <rect x="0" y="0" width="190" height="24" rx="5" fill="#5a9fd4"/>
+    <rect x="0" y="17" width="190" height="7" fill="#5a9fd4"/>
+    <text x="95" y="15" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Liveness Check</text>
+    <text x="95" y="35" text-anchor="middle" font-size="9" fill="#555">[Component]</text>
+    <text x="95" y="52" text-anchor="middle" font-size="9" fill="#333">Crea sesión de liveness</text>
+    <text x="95" y="67" text-anchor="middle" font-size="9" fill="#333">en Rekognition. Verifica</text>
+    <text x="95" y="82" text-anchor="middle" font-size="9" fill="#333">que es persona real.</text>
+    <text x="95" y="98" text-anchor="middle" font-size="8" fill="#777">Anti-spoofing · 3 reintentos</text>
   </g>
 
-  <!-- Identity Validator -->
-  <g transform="translate(295,210)" filter="url(#shadow)">
-    <rect width="210" height="100" rx="5" fill="#85bbf0"/>
-    <rect x="0" y="0" width="210" height="26" rx="5" fill="#5a9fd4"/>
-    <rect x="0" y="18" width="210" height="8" fill="#5a9fd4"/>
-    <text x="105" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Identity Validator</text>
-    <text x="105" y="38" text-anchor="middle" font-size="9" fill="#333">[Component]</text>
-    <text x="105" y="54" text-anchor="middle" font-size="9" fill="#333">Compara el rostro capturado</text>
-    <text x="105" y="68" text-anchor="middle" font-size="9" fill="#333">vs foto del documento de</text>
-    <text x="105" y="82" text-anchor="middle" font-size="9" fill="#333">identidad (cédula Colombia).</text>
+  <!-- Circuit Breaker: x=270 w=190 -->
+  <g transform="translate(270,194)" filter="url(#shadow)">
+    <rect width="190" height="110" rx="5" fill="#c62828"/>
+    <rect x="0" y="0" width="190" height="24" rx="5" fill="#9a1a1a"/>
+    <rect x="0" y="17" width="190" height="7" fill="#9a1a1a"/>
+    <text x="95" y="15" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Circuit Breaker</text>
+    <text x="95" y="35" text-anchor="middle" font-size="9" fill="#ffcdd2">[Resilience4j]</text>
+    <text x="95" y="52" text-anchor="middle" font-size="9" fill="#fff">Protege llamadas</text>
+    <text x="95" y="67" text-anchor="middle" font-size="9" fill="#fff">a Rekognition.</text>
+    <text x="95" y="82" text-anchor="middle" font-size="9" fill="#fff">Abre tras 3 fallos.</text>
+    <text x="95" y="98" text-anchor="middle" font-size="8" fill="#ffcdd2">waitDuration: 30 s</text>
   </g>
 
-  <!-- Biometric Registry -->
-  <g transform="translate(530,210)" filter="url(#shadow)">
-    <rect width="210" height="100" rx="5" fill="#85bbf0"/>
-    <rect x="0" y="0" width="210" height="26" rx="5" fill="#5a9fd4"/>
-    <rect x="0" y="18" width="210" height="8" fill="#5a9fd4"/>
-    <text x="105" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Biometric Registry</text>
-    <text x="105" y="38" text-anchor="middle" font-size="9" fill="#333">[Component]</text>
-    <text x="105" y="54" text-anchor="middle" font-size="9" fill="#333">Registra template facial</text>
-    <text x="105" y="68" text-anchor="middle" font-size="9" fill="#333">en Rekognition Collection</text>
-    <text x="105" y="82" text-anchor="middle" font-size="9" fill="#333">para auth futura.</text>
+  <!-- Identity Validator: x=480 w=190 -->
+  <g transform="translate(480,194)" filter="url(#shadow)">
+    <rect width="190" height="110" rx="5" fill="#85bbf0"/>
+    <rect x="0" y="0" width="190" height="24" rx="5" fill="#5a9fd4"/>
+    <rect x="0" y="17" width="190" height="7" fill="#5a9fd4"/>
+    <text x="95" y="15" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Identity Validator</text>
+    <text x="95" y="35" text-anchor="middle" font-size="9" fill="#555">[Component]</text>
+    <text x="95" y="52" text-anchor="middle" font-size="9" fill="#333">Compara rostro vs</text>
+    <text x="95" y="67" text-anchor="middle" font-size="9" fill="#333">foto cédula Colombia.</text>
+    <text x="95" y="82" text-anchor="middle" font-size="9" fill="#333">Similarity &gt; 90%</text>
+    <text x="95" y="98" text-anchor="middle" font-size="8" fill="#777">CompareFaces API</text>
   </g>
 
-  <!-- User Provisioning -->
-  <g transform="translate(60,350)" filter="url(#shadow)">
-    <rect width="320" height="100" rx="5" fill="#2e7d32"/>
-    <rect x="0" y="0" width="320" height="26" rx="5" fill="#1b5e20"/>
-    <rect x="0" y="18" width="320" height="8" fill="#1b5e20"/>
-    <text x="160" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">User Provisioning</text>
-    <text x="160" y="36" text-anchor="middle" font-size="9" fill="#c8e6c9">[Component · Cognito SDK]</text>
-    <text x="160" y="52" text-anchor="middle" font-size="9" fill="#fff">Crea usuario en Cognito User Pool.</text>
-    <text x="160" y="66" text-anchor="middle" font-size="9" fill="#fff">Asigna grupo CUSTOMER, atributos</text>
-    <text x="160" y="80" text-anchor="middle" font-size="9" fill="#fff">y activa MFA obligatorio.</text>
+  <!-- Biometric Registry: x=690 w=190 -->
+  <g transform="translate(690,194)" filter="url(#shadow)">
+    <rect width="190" height="110" rx="5" fill="#85bbf0"/>
+    <rect x="0" y="0" width="190" height="24" rx="5" fill="#5a9fd4"/>
+    <rect x="0" y="17" width="190" height="7" fill="#5a9fd4"/>
+    <text x="95" y="15" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Biometric Registry</text>
+    <text x="95" y="35" text-anchor="middle" font-size="9" fill="#555">[Component]</text>
+    <text x="95" y="52" text-anchor="middle" font-size="9" fill="#333">Registra template facial</text>
+    <text x="95" y="67" text-anchor="middle" font-size="9" fill="#333">en Rekognition Collection</text>
+    <text x="95" y="82" text-anchor="middle" font-size="9" fill="#333">para auth futura.</text>
+    <text x="95" y="98" text-anchor="middle" font-size="8" fill="#777">IndexFaces API</text>
   </g>
 
-  <!-- Credential Setup -->
-  <g transform="translate(400,350)" filter="url(#shadow)">
-    <rect width="320" height="100" rx="5" fill="#85bbf0"/>
-    <rect x="0" y="0" width="320" height="26" rx="5" fill="#5a9fd4"/>
-    <rect x="0" y="18" width="320" height="8" fill="#5a9fd4"/>
-    <text x="160" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Credential Setup</text>
-    <text x="160" y="36" text-anchor="middle" font-size="9" fill="#333">[Component]</text>
-    <text x="160" y="52" text-anchor="middle" font-size="9" fill="#333">Guía al usuario a crear contraseña</text>
-    <text x="160" y="66" text-anchor="middle" font-size="9" fill="#333">y registrar biometría (FaceID / PIN)</text>
-    <text x="160" y="80" text-anchor="middle" font-size="9" fill="#333">como métodos de acceso futuros.</text>
+  <!-- HORIZONTAL ARROW: Liveness -> Circuit Breaker (y-center of row1 = 194+55=249) -->
+  <line x1="250" y1="249" x2="270" y2="249" stroke="#c62828" stroke-width="1.5" marker-end="url(#arrow-red)"/>
+
+  <!-- CB -> Rekognition: route by BELOW row1 (y>304) to avoid Identity Validator and Biometric Registry -->
+  <!-- CB right edge (x=460,y=249) → down to y=312 → right to x=960 → up to y=245 → right to Rekognition left -->
+  <path d="M 460 249 L 460 312 L 960 312 L 960 245 L 1000 245" stroke="#c62828" stroke-width="1.2" stroke-dasharray="5,3" fill="none" marker-end="url(#arrow-red)"/>
+  <rect x="580" y="305" width="195" height="14" rx="3" fill="#fce4ec"/>
+  <text x="677" y="315" text-anchor="middle" font-size="8" fill="#c62828">CLOSED: llama Rekognition</text>
+
+  <!-- CB OPEN fallback -> SQS: go down from CB (x=365) past all rows, then right to SQS -->
+  <!-- CB bottom: y=304. Route down to y=580, right to x=1000 -->
+  <path d="M 365 304 L 365 580 L 1000 580" stroke="#c62828" stroke-width="1.2" stroke-dasharray="4,3" fill="none" marker-end="url(#arrow-red)"/>
+  <rect x="430" y="566" width="215" height="14" rx="3" fill="#fce4ec"/>
+  <text x="537" y="576" text-anchor="middle" font-size="8" fill="#c62828">OPEN: fallback a SQS retry queue</text>
+
+  <!-- Identity Validator -> Rekognition: right at y=259 -->
+  <path d="M 670 259 L 1000 259" stroke="#555" stroke-width="1.2" stroke-dasharray="4,2" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Biometric Registry -> Rekognition: right at y=273 -->
+  <path d="M 880 273 L 1000 273" stroke="#555" stroke-width="1.2" stroke-dasharray="4,2" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- VERTICAL ARROWS: Row1 -> Row2 (bottom of row1 = 194+110=304, top of row2 = 340) -->
+  <!-- Liveness(x=155) -> User Provisioning(center x=247) -->
+  <path d="M 155 304 L 155 322 L 247 322 L 247 340" stroke="#555" stroke-width="1.2" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- Identity Validator(x=575) -> User Provisioning(center x=247) via horizontal waypoint -->
+  <path d="M 575 304 L 575 322 L 247 322" stroke="#555" stroke-width="1" stroke-dasharray="3,3" fill="none"/>
+
+  <!-- Biometric Registry(x=785) -> Credential Setup(center x=642) -->
+  <path d="M 785 304 L 785 322 L 642 322 L 642 340" stroke="#555" stroke-width="1.2" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- ROW 2: User Provisioning | Credential Setup  y=340, h=100 -->
+  <!-- User Provisioning: x=60 w=375 -->
+  <g transform="translate(60,340)" filter="url(#shadow)">
+    <rect width="375" height="100" rx="5" fill="#2e7d32"/>
+    <rect x="0" y="0" width="375" height="24" rx="5" fill="#1b5e20"/>
+    <rect x="0" y="17" width="375" height="7" fill="#1b5e20"/>
+    <text x="187" y="15" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">User Provisioning</text>
+    <text x="187" y="35" text-anchor="middle" font-size="9" fill="#c8e6c9">[Component · Cognito SDK]</text>
+    <text x="187" y="52" text-anchor="middle" font-size="9" fill="#fff">Crea usuario en Cognito User Pool.</text>
+    <text x="187" y="67" text-anchor="middle" font-size="9" fill="#fff">Asigna grupo CUSTOMER y atributos.</text>
+    <text x="187" y="82" text-anchor="middle" font-size="9" fill="#fff">Activa MFA obligatorio (TOTP + SMS).</text>
   </g>
 
-  <!-- Event Publisher -->
-  <g transform="translate(60,488)" filter="url(#shadow)">
-    <rect width="660" height="55" rx="5" fill="#85bbf0"/>
-    <rect x="0" y="0" width="660" height="24" rx="5" fill="#5a9fd4"/>
-    <rect x="0" y="16" width="660" height="8" fill="#5a9fd4"/>
-    <text x="330" y="14" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Event Publisher</text>
-    <text x="330" y="36" text-anchor="middle" font-size="9" fill="#333">Publica OnboardingCompleted → SQS. Dispara notificación de bienvenida y registro en auditoría.</text>
+  <!-- Credential Setup: x=455 w=375 -->
+  <g transform="translate(455,340)" filter="url(#shadow)">
+    <rect width="375" height="100" rx="5" fill="#85bbf0"/>
+    <rect x="0" y="0" width="375" height="24" rx="5" fill="#5a9fd4"/>
+    <rect x="0" y="17" width="375" height="7" fill="#5a9fd4"/>
+    <text x="187" y="15" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Credential Setup</text>
+    <text x="187" y="35" text-anchor="middle" font-size="9" fill="#eef">[Component]</text>
+    <text x="187" y="52" text-anchor="middle" font-size="9" fill="#333">Guía al usuario a crear contraseña</text>
+    <text x="187" y="67" text-anchor="middle" font-size="9" fill="#333">y registrar biometría (FaceID / PIN)</text>
+    <text x="187" y="82" text-anchor="middle" font-size="9" fill="#333">como métodos de acceso futuros.</text>
   </g>
 
-  <!-- ══ EXTERNOS ══ -->
-  <!-- Rekognition -->
-  <g transform="translate(880,210)" filter="url(#shadow)">
-    <rect width="180" height="90" rx="5" fill="#999"/>
-    <rect x="0" y="0" width="180" height="26" rx="5" fill="#777"/>
-    <rect x="0" y="18" width="180" height="8" fill="#777"/>
-    <text x="90" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">AWS Rekognition</text>
-    <text x="90" y="36" text-anchor="middle" font-size="9" fill="#eee">[Sistema Externo]</text>
-    <text x="90" y="52" text-anchor="middle" font-size="9" fill="#eee">Liveness Sessions</text>
-    <text x="90" y="66" text-anchor="middle" font-size="9" fill="#eee">Face Collections</text>
-    <text x="90" y="80" text-anchor="middle" font-size="9" fill="#eee">CompareFaces API</text>
+  <!-- User Provisioning -> Cognito: right at y=390, then to x=1000 -->
+  <path d="M 435 390 L 960 390 L 960 400 L 1000 400" stroke="#555" stroke-width="1.2" stroke-dasharray="4,2" fill="none" marker-end="url(#arrow)"/>
+
+  <!-- VERTICAL ARROWS: Row2 -> Event Publisher (bottom row2=440, top EP=480) -->
+  <line x1="247" y1="440" x2="247" y2="480" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="642" y1="440" x2="642" y2="480" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <!-- ROW 3: Event Publisher (full width) y=480, h=60 -->
+  <g transform="translate(60,480)" filter="url(#shadow)">
+    <rect width="820" height="60" rx="5" fill="#85bbf0"/>
+    <rect x="0" y="0" width="820" height="24" rx="5" fill="#5a9fd4"/>
+    <rect x="0" y="17" width="820" height="7" fill="#5a9fd4"/>
+    <text x="410" y="15" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Event Publisher</text>
+    <text x="410" y="38" text-anchor="middle" font-size="9" fill="#333">Publica OnboardingCompleted a SQS  ·  Dispara bienvenida (Notification Service)  +  registro en Audit Service  +  métrica a CloudWatch</text>
   </g>
 
-  <!-- Cognito -->
-  <g transform="translate(880,360)" filter="url(#shadow)">
-    <rect width="180" height="90" rx="5" fill="#999"/>
-    <rect x="0" y="0" width="180" height="26" rx="5" fill="#777"/>
-    <rect x="0" y="18" width="180" height="8" fill="#777"/>
-    <text x="90" y="16" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">AWS Cognito</text>
-    <text x="90" y="36" text-anchor="middle" font-size="9" fill="#eee">[Identity Provider]</text>
-    <text x="90" y="52" text-anchor="middle" font-size="9" fill="#eee">AdminCreateUser</text>
-    <text x="90" y="66" text-anchor="middle" font-size="9" fill="#eee">AddUserToGroup</text>
-    <text x="90" y="80" text-anchor="middle" font-size="9" fill="#eee">SetUserMFAPreference</text>
+  <!-- Event Publisher -> SQS: right at y=510 -->
+  <line x1="880" y1="510" x2="1000" y2="510" stroke="#f0a500" stroke-width="1.5" marker-end="url(#arrow-orange)"/>
+  <rect x="896" y="496" width="74" height="14" rx="3" fill="#fff8e1"/>
+  <text x="933" y="506" text-anchor="middle" font-size="8" fill="#e06c00">evento</text>
+
+  <!-- EXTERNAL SYSTEMS (right column): x=1000 -->
+  <!-- Rekognition: y=185 h=125 -->
+  <g transform="translate(1000,185)" filter="url(#shadow)">
+    <rect width="200" height="125" rx="5" fill="#999"/>
+    <rect x="0" y="0" width="200" height="26" rx="5" fill="#777"/>
+    <rect x="0" y="19" width="200" height="7" fill="#777"/>
+    <text x="100" y="17" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">AWS Rekognition</text>
+    <text x="100" y="40" text-anchor="middle" font-size="9" fill="#eee">[Sistema Externo]</text>
+    <text x="100" y="58" text-anchor="middle" font-size="9" fill="#eee">CreateFaceLivenessSession</text>
+    <text x="100" y="73" text-anchor="middle" font-size="9" fill="#eee">CompareFaces API</text>
+    <text x="100" y="88" text-anchor="middle" font-size="9" fill="#eee">IndexFaces (Collection)</text>
+    <text x="100" y="112" text-anchor="middle" font-size="8" fill="#ccc">Similarity threshold configurable</text>
   </g>
 
-  <!-- SQS -->
-  <g transform="translate(880,500)" filter="url(#shadow)">
-    <rect width="180" height="55" rx="22" fill="#f0a500"/>
-    <text x="90" y="24" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Amazon SQS</text>
-    <text x="90" y="40" text-anchor="middle" font-size="9" fill="#fff">OnboardingCompleted</text>
+  <!-- Cognito: y=340 h=120 -->
+  <g transform="translate(1000,340)" filter="url(#shadow)">
+    <rect width="200" height="120" rx="5" fill="#999"/>
+    <rect x="0" y="0" width="200" height="26" rx="5" fill="#777"/>
+    <rect x="0" y="19" width="200" height="7" fill="#777"/>
+    <text x="100" y="17" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">AWS Cognito</text>
+    <text x="100" y="40" text-anchor="middle" font-size="9" fill="#eee">[Identity Provider]</text>
+    <text x="100" y="58" text-anchor="middle" font-size="9" fill="#eee">AdminCreateUser</text>
+    <text x="100" y="73" text-anchor="middle" font-size="9" fill="#eee">AddUserToGroup (CUSTOMER)</text>
+    <text x="100" y="88" text-anchor="middle" font-size="9" fill="#eee">SetUserMFAPreference</text>
+    <text x="100" y="103" text-anchor="middle" font-size="9" fill="#eee">AssociateSoftwareToken</text>
   </g>
 
-  <!-- ══ ARROWS ══ -->
-  <line x1="165" y1="177" x2="165" y2="210" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
-  <line x1="400" y1="177" x2="400" y2="210" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
-  <line x1="635" y1="177" x2="635" y2="210" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
-  <line x1="165" y1="310" x2="220" y2="350" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
-  <line x1="400" y1="310" x2="280" y2="350" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
-  <line x1="635" y1="310" x2="560" y2="350" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
-  <line x1="165" y1="310" x2="880" y2="255" stroke="#555" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
-  <line x1="400" y1="310" x2="880" y2="270" stroke="#555" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
-  <line x1="635" y1="310" x2="880" y2="285" stroke="#555" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
-  <line x1="220" y1="450" x2="220" y2="488" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
-  <line x1="560" y1="450" x2="560" y2="488" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
-  <line x1="220" y1="450" x2="880" y2="400" stroke="#555" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
-  <line x1="720" y1="515" x2="880" y2="527" stroke="#f0a500" stroke-width="1.2" marker-end="url(#arrow)"/>
-  <text x="780" y="512" font-size="9" fill="#f0a500">evento</text>
+  <!-- SQS: y=490 h=56 -->
+  <g transform="translate(1000,490)" filter="url(#shadow)">
+    <rect width="200" height="56" rx="24" fill="#f0a500"/>
+    <text x="100" y="25" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Amazon SQS</text>
+    <text x="100" y="42" text-anchor="middle" font-size="9" fill="#fff">OnboardingCompleted · Retry queue</text>
+  </g>
 
-  <!-- Flow annotation -->
-  <rect x="40" y="625" width="810" height="108" rx="5" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1"/>
-  <text x="55" y="643" font-size="11" font-weight="bold" fill="#2e7d32">Flujo de Onboarding paso a paso:</text>
-  <text x="55" y="659" font-size="10" fill="#333">1. Cliente captura selfie en la app Flutter → Onboarding Controller recibe el frame.</text>
-  <text x="55" y="675" font-size="10" fill="#333">2. Liveness Check → AWS Rekognition valida que es una persona real (no foto ni video).</text>
-  <text x="55" y="691" font-size="10" fill="#333">3. Identity Validator → compara rostro con cédula escaneada. Similarity &gt; 90%.</text>
-  <text x="55" y="707" font-size="10" fill="#333">4. Biometric Registry → guarda template en Rekognition Collection para auth biométrica futura.</text>
-  <text x="55" y="723" font-size="10" fill="#333">5. User Provisioning → crea usuario en Cognito con MFA obligatorio.</text>
-  <text x="55" y="739" font-size="10" fill="#333">6. Credential Setup → cliente elige contraseña + registra FaceID/TouchID → OnboardingCompleted publicado.</text>
+  <!-- FLOW ANNOTATION  y=690 -->
+  <rect x="40" y="690" width="1330" height="178" rx="6" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1.5"/>
+  <text x="56" y="712" font-size="11" font-weight="bold" fill="#2e7d32">Flujo de Onboarding + Resiliencia:</text>
+  <text x="56" y="732" font-size="10" fill="#333">1. Cliente captura selfie en Flutter → Onboarding Controller recibe el frame e inicia el flujo.</text>
+  <text x="56" y="750" font-size="10" fill="#333">2. Liveness Check invoca al Circuit Breaker (Resilience4j). CLOSED: CreateFaceLivenessSession en Rekognition. OPEN: encola en SQS retry queue.</text>
+  <text x="56" y="768" font-size="10" fill="#333">3. Identity Validator → CompareFaces API en Rekognition. Similarity &gt; 90% para aprobar. Threshold configurable por entorno.</text>
+  <text x="56" y="786" font-size="10" fill="#333">4. Biometric Registry → IndexFaces en Rekognition Collection → template facial disponible para auth biométrica futura sin repetir onboarding.</text>
+  <text x="56" y="804" font-size="10" fill="#333">5. User Provisioning → AdminCreateUser + MFA obligatorio TOTP en Cognito. Credential Setup: cliente elige contraseña + FaceID / TouchID / PIN.</text>
+  <text x="56" y="822" font-size="10" fill="#333">6. Event Publisher → OnboardingCompleted a SQS → Notification Service (bienvenida) + Audit Service (log inmutable) + métrica success a CloudWatch.</text>
+  <text x="56" y="852" font-size="9" fill="#666">Ley 1581/2012: consentimiento explícito de cliente requerido antes del paso 2 para tratamiento de datos biométricos (datos sensibles).</text>
+
+  <!-- LEGEND  y=878 -->
+  <rect x="40" y="874" width="1050" height="20" rx="4" fill="#f0f0f0" stroke="#ddd"/>
+  <rect x="50" y="878" width="10" height="12" rx="2" fill="#5a9fd4"/>
+  <text x="66" y="889" font-size="9" fill="#333">Componente interno</text>
+  <rect x="180" y="878" width="10" height="12" rx="2" fill="#2e7d32"/>
+  <text x="196" y="889" font-size="9" fill="#333">Provisioning externo-interno</text>
+  <rect x="360" y="878" width="10" height="12" rx="2" fill="#c62828"/>
+  <text x="376" y="889" font-size="9" fill="#c62828">Circuit Breaker</text>
+  <rect x="470" y="878" width="10" height="12" rx="2" fill="#999"/>
+  <text x="486" y="889" font-size="9" fill="#333">Sistema externo AWS</text>
+  <line x1="610" y1="884" x2="640" y2="884" stroke="#555" stroke-width="1.5"/>
+  <text x="646" y="889" font-size="9" fill="#333">Llamada sync</text>
+  <line x1="730" y1="884" x2="760" y2="884" stroke="#555" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="766" y="889" font-size="9" fill="#333">Llamada async / externa</text>
+  <line x1="890" y1="884" x2="920" y2="884" stroke="#c62828" stroke-width="1.5" stroke-dasharray="4,2"/>
+  <text x="926" y="889" font-size="9" fill="#c62828">CB fallback path</text>
 </svg>

@@ -46,13 +46,13 @@
 
   <!-- Query Handler -->
   <g transform="translate(395,135)" filter="url(#shadow)">
-    <rect width="300" height="75" rx="5" fill="#85bbf0"/>
+    <rect width="300" height="84" rx="5" fill="#85bbf0"/>
     <rect x="0" y="0" width="300" height="24" rx="5" fill="#5a9fd4"/>
     <rect x="0" y="16" width="300" height="8" fill="#5a9fd4"/>
     <text x="150" y="14" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Query Handler</text>
-    <text x="150" y="34" text-anchor="middle" font-size="9" fill="#333">[Component · CQRS Read]</text>
-    <text x="150" y="50" text-anchor="middle" font-size="9" fill="#333">Consultas paginadas del historial.</text>
-    <text x="150" y="63" text-anchor="middle" font-size="9" fill="#333">Solo lectura, nunca escribe.</text>
+    <text x="150" y="38" text-anchor="middle" font-size="9" fill="#333">[Component · CQRS Read]</text>
+    <text x="150" y="56" text-anchor="middle" font-size="9" fill="#333">Consultas paginadas del historial.</text>
+    <text x="150" y="74" text-anchor="middle" font-size="9" fill="#333">Solo lectura, nunca escribe.</text>
   </g>
 
   <!-- Movements Repository -->
@@ -123,19 +123,43 @@
   </g>
 
   <!-- ══ ARROWS ══ -->
-  <line x1="390" y1="380" x2="205" y2="345" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
-  <text x="260" y="370" font-size="9" fill="#333">POST (write)</text>
-  <line x1="610" y1="380" x2="545" y2="345" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
-  <text x="530" y="370" font-size="9" fill="#333">GET (read)</text>
-  <line x1="205" y1="210" x2="820" y2="178" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
-  <text x="480" y="185" font-size="9" fill="#333">escribe movimiento · REST</text>
-  <line x1="205" y1="293" x2="205" y2="345" stroke="#555" stroke-width="1" marker-end="url(#arrow)"/>
-  <line x1="335" y1="293" x2="905" y2="530" stroke="#f0a500" stroke-width="1.2" marker-end="url(#arrow)"/>
-  <text x="600" y="448" font-size="9" fill="#f0a500">MovementRegistered</text>
-  <line x1="545" y1="293" x2="820" y2="310" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
-  <text x="660" y="305" font-size="9" fill="#333">consulta</text>
-  <line x1="210" y1="448" x2="820" y2="443" stroke="#e06c00" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
-  <text x="480" y="438" font-size="9" fill="#e06c00">Cache-Aside</text>
+
+  <!-- Entrada desde API Gateway al Controller (vertical desde arriba del boundary) -->
+  <line x1="390" y1="78" x2="390" y2="344" stroke="#6b2d8b" stroke-width="1.5" stroke-dasharray="6,3" marker-end="url(#arrow)"/>
+  <text x="404" y="220" font-size="9" fill="#6b2d8b">desde API Gateway</text>
+
+  <!-- Controller → Command Handler (POST): codo por la izquierda, evita el Event Publisher -->
+  <path d="M 60 380 L 45 380 L 45 172 L 75 172" stroke="#555" stroke-width="1.2" fill="none" marker-end="url(#arrow)"/>
+  <text x="42" y="276" font-size="9" fill="#333" text-anchor="middle" transform="rotate(-90 42 276)">POST /movements</text>
+
+  <!-- Controller → Query Handler (GET): sube verticalmente al Query Handler -->
+  <line x1="545" y1="344" x2="545" y2="220" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="552" y="285" font-size="9" fill="#333">GET /movements</text>
+
+  <!-- Command Handler → Event Publisher: baja verticalmente (corto) -->
+  <line x1="205" y1="210" x2="205" y2="227" stroke="#555" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- Command Handler → Core Bancario: codo por encima de todos los boxes, evita Query Handler -->
+  <path d="M 205 135 L 205 103 L 905 103 L 905 140" stroke="#555" stroke-width="1.2" fill="none" marker-end="url(#arrow)"/>
+  <text x="555" y="100" font-size="9" fill="#333" text-anchor="middle">escribe movimiento · REST</text>
+
+  <!-- Event Publisher → SQS: codo ortogonal, baja por la izquierda de los externos -->
+  <path d="M 205 293 L 205 320 L 815 320 L 815 555 L 820 555" stroke="#f0a500" stroke-width="1.2" fill="none" marker-end="url(#arrow)"/>
+  <text x="510" y="314" font-size="9" fill="#f0a500" text-anchor="middle">MovementRegistered</text>
+
+  <!-- Query Handler → Movements Repository: baja verticalmente (corto) -->
+  <line x1="545" y1="220" x2="545" y2="227" stroke="#555" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- Movements Repository → BD Lectura: diagonal corta hacia la derecha -->
+  <line x1="696" y1="260" x2="819" y2="296" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <text x="755" y="272" font-size="9" fill="#333" text-anchor="middle">consulta</text>
+
+  <!-- Controller → Cache Manager: baja verticalmente (corto) -->
+  <line x1="210" y1="415" x2="210" y2="447" stroke="#e06c00" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
+
+  <!-- Cache Manager → Redis: horizontal hacia la derecha -->
+  <line x1="361" y1="483" x2="819" y2="442" stroke="#e06c00" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
+  <text x="580" y="456" font-size="9" fill="#e06c00" text-anchor="middle">Cache-Aside</text>
 
   <!-- CQRS annotation -->
   <rect x="40" y="590" width="720" height="72" rx="5" fill="#e3f2fd" stroke="#1168bd" stroke-width="1"/>

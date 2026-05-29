@@ -1,0 +1,360 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 860" font-family="Segoe UI, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#555"/>
+    </marker>
+    <marker id="arrow-green" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto">
+      <polygon points="0 0, 10 3.5, 0 7" fill="#2e7d32"/>
+    </marker>
+    <filter id="shadow"><feDropShadow dx="1" dy="2" stdDeviation="2" flood-opacity="0.10"/></filter>
+  </defs>
+
+  <rect width="1400" height="860" fill="#f8f9fa"/>
+
+  <text x="700" y="34" text-anchor="middle" font-size="17" font-weight="bold" fill="#1a1a2e">Estrategia de Observabilidad — Golden Signals + SLOs</text>
+  <text x="700" y="52" text-anchor="middle" font-size="11" fill="#666">AWS CloudWatch · X-Ray · Container Insights · Circuit Breaker Metrics · Error Budget</text>
+  <line x1="40" y1="62" x2="1360" y2="62" stroke="#ddd" stroke-width="1"/>
+
+  <!-- ══ COLUMN HEADERS ══ -->
+  <text x="120" y="88" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1a2e">Fuentes de señal</text>
+  <text x="460" y="88" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1a2e">Pipeline de observabilidad</text>
+  <text x="830" y="88" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1a2e">SLOs por servicio</text>
+  <text x="1190" y="88" text-anchor="middle" font-size="12" font-weight="bold" fill="#1a1a2e">Respuesta operacional</text>
+
+  <!-- ══ SOURCES ══ -->
+  <!-- ECS Fargate -->
+  <g transform="translate(40,100)" filter="url(#shadow)">
+    <rect width="165" height="55" rx="5" fill="#2e7d32"/>
+    <rect x="0" y="0" width="165" height="20" rx="5" fill="#1b5e20"/>
+    <rect x="0" y="13" width="165" height="7" fill="#1b5e20"/>
+    <text x="82" y="13" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">ECS Fargate</text>
+    <text x="82" y="31" text-anchor="middle" font-size="9" fill="#c8e6c9">Container metrics</text>
+    <text x="82" y="44" text-anchor="middle" font-size="9" fill="#c8e6c9">CPU · Mem · Task count</text>
+  </g>
+
+  <!-- API Gateway -->
+  <g transform="translate(40,175)" filter="url(#shadow)">
+    <rect width="165" height="55" rx="5" fill="#6b2d8b"/>
+    <rect x="0" y="0" width="165" height="20" rx="5" fill="#4e1f6b"/>
+    <rect x="0" y="13" width="165" height="7" fill="#4e1f6b"/>
+    <text x="82" y="13" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">API Gateway</text>
+    <text x="82" y="31" text-anchor="middle" font-size="9" fill="#e8d0ff">Latency · 4xx · 5xx</text>
+    <text x="82" y="44" text-anchor="middle" font-size="9" fill="#e8d0ff">IntegrationLatency</text>
+  </g>
+
+  <!-- RDS / DynamoDB -->
+  <g transform="translate(40,250)" filter="url(#shadow)">
+    <rect width="165" height="55" rx="5" fill="#2d78c8"/>
+    <rect x="0" y="0" width="165" height="20" rx="5" fill="#1a5a9a"/>
+    <rect x="0" y="13" width="165" height="7" fill="#1a5a9a"/>
+    <text x="82" y="13" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">RDS / DynamoDB</text>
+    <text x="82" y="31" text-anchor="middle" font-size="9" fill="#ddeeff">DBConnections</text>
+    <text x="82" y="44" text-anchor="middle" font-size="9" fill="#ddeeff">ReadLatency · WriteLatency</text>
+  </g>
+
+  <!-- Resilience4j -->
+  <g transform="translate(40,325)" filter="url(#shadow)">
+    <rect width="165" height="55" rx="5" fill="#c62828"/>
+    <rect x="0" y="0" width="165" height="20" rx="5" fill="#9a1a1a"/>
+    <rect x="0" y="13" width="165" height="7" fill="#9a1a1a"/>
+    <text x="82" y="13" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Resilience4j</text>
+    <text x="82" y="31" text-anchor="middle" font-size="9" fill="#ffcdd2">CircuitBreaker state</text>
+    <text x="82" y="44" text-anchor="middle" font-size="9" fill="#ffcdd2">CLOSED / OPEN / HALF_OPEN</text>
+  </g>
+
+  <!-- SQS / SNS -->
+  <g transform="translate(40,400)" filter="url(#shadow)">
+    <rect width="165" height="55" rx="5" fill="#f0a500"/>
+    <rect x="0" y="0" width="165" height="20" rx="5" fill="#c07800"/>
+    <rect x="0" y="13" width="165" height="7" fill="#c07800"/>
+    <text x="82" y="13" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">SQS / SNS</text>
+    <text x="82" y="31" text-anchor="middle" font-size="9" fill="#fff">ApproximateAge</text>
+    <text x="82" y="44" text-anchor="middle" font-size="9" fill="#fff">NumberOfMessages DLQ</text>
+  </g>
+
+  <!-- AWS X-Ray -->
+  <g transform="translate(40,475)" filter="url(#shadow)">
+    <rect width="165" height="55" rx="5" fill="#1a4f6b"/>
+    <rect x="0" y="0" width="165" height="20" rx="5" fill="#0d3348"/>
+    <rect x="0" y="13" width="165" height="7" fill="#0d3348"/>
+    <text x="82" y="13" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">AWS X-Ray</text>
+    <text x="82" y="31" text-anchor="middle" font-size="9" fill="#cde">Distributed traces</text>
+    <text x="82" y="44" text-anchor="middle" font-size="9" fill="#cde">Service map · Annotations</text>
+  </g>
+
+  <!-- Arrows sources → pipeline -->
+  <line x1="205" y1="127" x2="270" y2="200" stroke="#555" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="205" y1="202" x2="270" y2="210" stroke="#555" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="205" y1="277" x2="270" y2="218" stroke="#555" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="205" y1="352" x2="270" y2="226" stroke="#555" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="205" y1="427" x2="270" y2="232" stroke="#555" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="205" y1="502" x2="270" y2="238" stroke="#555" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- ══ PIPELINE ══ -->
+  <!-- CloudWatch Metrics -->
+  <g transform="translate(270,150)" filter="url(#shadow)">
+    <rect width="200" height="65" rx="5" fill="#2d6b8b"/>
+    <rect x="0" y="0" width="200" height="22" rx="5" fill="#1a4f6b"/>
+    <rect x="0" y="15" width="200" height="7" fill="#1a4f6b"/>
+    <text x="100" y="14" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">CloudWatch Metrics</text>
+    <text x="100" y="34" text-anchor="middle" font-size="9" fill="#cde">Almacén de series temporales</text>
+    <text x="100" y="48" text-anchor="middle" font-size="9" fill="#cde">Retención: 15 meses</text>
+    <text x="100" y="60" text-anchor="middle" font-size="9" fill="#cde">Resolución: 1 segundo</text>
+  </g>
+
+  <!-- CloudWatch Logs -->
+  <g transform="translate(270,250)" filter="url(#shadow)">
+    <rect width="200" height="65" rx="5" fill="#2d6b8b"/>
+    <rect x="0" y="0" width="200" height="22" rx="5" fill="#1a4f6b"/>
+    <rect x="0" y="15" width="200" height="7" fill="#1a4f6b"/>
+    <text x="100" y="14" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">CloudWatch Logs</text>
+    <text x="100" y="34" text-anchor="middle" font-size="9" fill="#cde">Logs estructurados JSON</text>
+    <text x="100" y="48" text-anchor="middle" font-size="9" fill="#cde">Log Groups por servicio</text>
+    <text x="100" y="60" text-anchor="middle" font-size="9" fill="#cde">Log Insights: queries ad-hoc</text>
+  </g>
+
+  <!-- X-Ray Service Map -->
+  <g transform="translate(270,350)" filter="url(#shadow)">
+    <rect width="200" height="65" rx="5" fill="#1a4f6b"/>
+    <rect x="0" y="0" width="200" height="22" rx="5" fill="#0d3348"/>
+    <rect x="0" y="15" width="200" height="7" fill="#0d3348"/>
+    <text x="100" y="14" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">X-Ray Service Map</text>
+    <text x="100" y="34" text-anchor="middle" font-size="9" fill="#cde">Grafo de dependencias</text>
+    <text x="100" y="48" text-anchor="middle" font-size="9" fill="#cde">Latencias por hop</text>
+    <text x="100" y="60" text-anchor="middle" font-size="9" fill="#cde">Trazas completas end-to-end</text>
+  </g>
+
+  <!-- Composite Alarms -->
+  <g transform="translate(270,450)" filter="url(#shadow)">
+    <rect width="200" height="65" rx="5" fill="#c62828"/>
+    <rect x="0" y="0" width="200" height="22" rx="5" fill="#9a1a1a"/>
+    <rect x="0" y="15" width="200" height="7" fill="#9a1a1a"/>
+    <text x="100" y="14" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Composite Alarms</text>
+    <text x="100" y="34" text-anchor="middle" font-size="9" fill="#ffcdd2">Agrega múltiples señales</text>
+    <text x="100" y="48" text-anchor="middle" font-size="9" fill="#ffcdd2">Reduce falsos positivos</text>
+    <text x="100" y="60" text-anchor="middle" font-size="9" fill="#ffcdd2">SNS → PagerDuty / Slack</text>
+  </g>
+
+  <!-- pipeline → SLOs arrow -->
+  <line x1="470" y1="183" x2="570" y2="350" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="470" y1="283" x2="570" y2="355" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="470" y1="383" x2="570" y2="360" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <line x1="470" y1="483" x2="570" y2="365" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+
+  <!-- ══ SLOs TABLE ══ -->
+  <rect x="570" y="100" width="580" height="510" rx="8" fill="#fff" stroke="#ccc" stroke-width="1" filter="url(#shadow)"/>
+  <rect x="570" y="100" width="580" height="34" rx="8" fill="#1a1a2e"/>
+  <rect x="570" y="120" width="580" height="14" fill="#1a1a2e"/>
+  <text x="860" y="122" text-anchor="middle" font-size="12" font-weight="bold" fill="#fff">SLOs Definidos por Servicio</text>
+
+  <!-- Header row -->
+  <rect x="570" y="134" width="580" height="24" fill="#e8eaf6"/>
+  <text x="620" y="150" font-size="9" font-weight="bold" fill="#333">Servicio</text>
+  <text x="780" y="150" font-size="9" font-weight="bold" fill="#333">Latencia p99</text>
+  <text x="900" y="150" font-size="9" font-weight="bold" fill="#333">Error Rate</text>
+  <text x="1010" y="150" font-size="9" font-weight="bold" fill="#333">Availability</text>
+  <text x="1090" y="150" font-size="9" font-weight="bold" fill="#333">Error Budget/mes</text>
+
+  <!-- rows -->
+  <!-- Auth -->
+  <rect x="570" y="158" width="580" height="26" fill="#f9f9f9"/>
+  <text x="620" y="175" font-size="9" fill="#1b5e20" font-weight="bold">Auth Service</text>
+  <text x="780" y="175" font-size="9" fill="#333">&lt; 300 ms</text>
+  <text x="900" y="175" font-size="9" fill="#333">&lt; 0.1 %</text>
+  <text x="1010" y="175" font-size="9" fill="#333">99.95 %</text>
+  <text x="1090" y="175" font-size="9" fill="#333">21.6 min</text>
+
+  <!-- API GW -->
+  <rect x="570" y="184" width="580" height="26" fill="#fff"/>
+  <text x="620" y="201" font-size="9" fill="#4e1f6b" font-weight="bold">API Gateway</text>
+  <text x="780" y="201" font-size="9" fill="#333">&lt; 100 ms overhead</text>
+  <text x="900" y="201" font-size="9" fill="#333">&lt; 0.05 %</text>
+  <text x="1010" y="201" font-size="9" fill="#333">99.99 %</text>
+  <text x="1090" y="201" font-size="9" fill="#333">4.3 min</text>
+
+  <!-- Customer -->
+  <rect x="570" y="210" width="580" height="26" fill="#f9f9f9"/>
+  <text x="620" y="227" font-size="9" fill="#1b5e20" font-weight="bold">Customer Service</text>
+  <text x="780" y="227" font-size="9" fill="#333">&lt; 50 ms (caché hit)</text>
+  <text x="900" y="227" font-size="9" fill="#333">&lt; 0.1 %</text>
+  <text x="1010" y="227" font-size="9" fill="#333">99.9 %</text>
+  <text x="1090" y="227" font-size="9" fill="#333">43.2 min</text>
+
+  <!-- Movements read -->
+  <rect x="570" y="236" width="580" height="26" fill="#fff"/>
+  <text x="620" y="253" font-size="9" fill="#1b5e20" font-weight="bold">Movements (read)</text>
+  <text x="780" y="253" font-size="9" fill="#333">&lt; 200 ms</text>
+  <text x="900" y="253" font-size="9" fill="#333">&lt; 0.1 %</text>
+  <text x="1010" y="253" font-size="9" fill="#333">99.9 %</text>
+  <text x="1090" y="253" font-size="9" fill="#333">43.2 min</text>
+
+  <!-- Transfer -->
+  <rect x="570" y="262" width="580" height="26" fill="#f9f9f9"/>
+  <text x="620" y="279" font-size="9" fill="#1b5e20" font-weight="bold">Transfer Service</text>
+  <text x="780" y="279" font-size="9" fill="#333">&lt; 2 s (incluye Core)</text>
+  <text x="900" y="279" font-size="9" fill="#333">&lt; 0.05 %</text>
+  <text x="1010" y="279" font-size="9" fill="#333">99.95 %</text>
+  <text x="1090" y="279" font-size="9" fill="#333">21.6 min</text>
+
+  <!-- Payment -->
+  <rect x="570" y="288" width="580" height="26" fill="#fff"/>
+  <text x="620" y="305" font-size="9" fill="#1b5e20" font-weight="bold">Payment Service</text>
+  <text x="780" y="305" font-size="9" fill="#333">&lt; 5 s (incluye ACH)</text>
+  <text x="900" y="305" font-size="9" fill="#333">&lt; 0.1 %</text>
+  <text x="1010" y="305" font-size="9" fill="#333">99.9 %</text>
+  <text x="1090" y="305" font-size="9" fill="#333">43.2 min</text>
+
+  <!-- Onboarding -->
+  <rect x="570" y="314" width="580" height="26" fill="#f9f9f9"/>
+  <text x="620" y="331" font-size="9" fill="#1b5e20" font-weight="bold">Onboarding Service</text>
+  <text x="780" y="331" font-size="9" fill="#333">&lt; 5 s (incl. Rekognition)</text>
+  <text x="900" y="331" font-size="9" fill="#333">&lt; 1 %</text>
+  <text x="1010" y="331" font-size="9" fill="#333">99.5 %</text>
+  <text x="1090" y="331" font-size="9" fill="#333">3.6 h</text>
+
+  <!-- Audit -->
+  <rect x="570" y="340" width="580" height="26" fill="#fff"/>
+  <text x="620" y="357" font-size="9" fill="#1b5e20" font-weight="bold">Audit Service (write)</text>
+  <text x="780" y="357" font-size="9" fill="#333">&lt; 100 ms (async)</text>
+  <text x="900" y="357" font-size="9" fill="#333">&lt; 0.01 %</text>
+  <text x="1010" y="357" font-size="9" fill="#333">99.99 %</text>
+  <text x="1090" y="357" font-size="9" fill="#333">4.3 min</text>
+
+  <!-- divider -->
+  <line x1="580" y1="374" x2="1140" y2="374" stroke="#eee" stroke-width="1"/>
+
+  <!-- Golden Signals section -->
+  <text x="590" y="394" font-size="11" font-weight="bold" fill="#1a1a2e">4 Golden Signals monitoreados</text>
+
+  <rect x="585" y="404" width="130" height="60" rx="5" fill="#e3f2fd" stroke="#1168bd" stroke-width="1"/>
+  <text x="650" y="422" text-anchor="middle" font-size="10" font-weight="bold" fill="#1168bd">⏱ Latencia</text>
+  <text x="650" y="437" text-anchor="middle" font-size="9" fill="#333">p50 · p95 · p99</text>
+  <text x="650" y="451" text-anchor="middle" font-size="9" fill="#333">separando éxito/error</text>
+
+  <rect x="725" y="404" width="130" height="60" rx="5" fill="#e8f5e9" stroke="#2e7d32" stroke-width="1"/>
+  <text x="790" y="422" text-anchor="middle" font-size="10" font-weight="bold" fill="#2e7d32">📊 Tráfico</text>
+  <text x="790" y="437" text-anchor="middle" font-size="9" fill="#333">RPS por servicio</text>
+  <text x="790" y="451" text-anchor="middle" font-size="9" fill="#333">tendencias y picos</text>
+
+  <rect x="865" y="404" width="130" height="60" rx="5" fill="#fce4ec" stroke="#c62828" stroke-width="1"/>
+  <text x="930" y="422" text-anchor="middle" font-size="10" font-weight="bold" fill="#c62828">❌ Errores</text>
+  <text x="930" y="437" text-anchor="middle" font-size="9" fill="#333">4xx · 5xx · DLQ</text>
+  <text x="930" y="451" text-anchor="middle" font-size="9" fill="#333">Circuit breaker opens</text>
+
+  <rect x="1005" y="404" width="130" height="60" rx="5" fill="#fff3e0" stroke="#f0a500" stroke-width="1"/>
+  <text x="1070" y="422" text-anchor="middle" font-size="10" font-weight="bold" fill="#f0a500">🔥 Saturación</text>
+  <text x="1070" y="437" text-anchor="middle" font-size="9" fill="#333">CPU · Mem · Conn pool</text>
+  <text x="1070" y="451" text-anchor="middle" font-size="9" fill="#333">ECS task pending</text>
+
+  <!-- Error budget note -->
+  <rect x="585" y="478" width="560" height="50" rx="5" fill="#fff9c4" stroke="#f9a825" stroke-width="1"/>
+  <text x="865" y="497" text-anchor="middle" font-size="10" font-weight="bold" fill="#e65100">Error Budget Policy</text>
+  <text x="865" y="513" text-anchor="middle" font-size="9" fill="#555">Si el error budget se consume &gt; 50% a mitad de mes → freeze de deploys no críticos.</text>
+  <text x="865" y="525" text-anchor="middle" font-size="9" fill="#555">Si se agota → solo deployments de hotfix permitidos. Revisión de SLO obligatoria.</text>
+
+  <!-- ══ RESPONSE ══ -->
+  <!-- CloudWatch Dashboard -->
+  <g transform="translate(1200,100)" filter="url(#shadow)">
+    <rect width="170" height="70" rx="5" fill="#2d6b8b"/>
+    <rect x="0" y="0" width="170" height="22" rx="5" fill="#1a4f6b"/>
+    <rect x="0" y="15" width="170" height="7" fill="#1a4f6b"/>
+    <text x="85" y="14" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">CW Dashboard</text>
+    <text x="85" y="34" text-anchor="middle" font-size="9" fill="#cde">Widgets por servicio</text>
+    <text x="85" y="48" text-anchor="middle" font-size="9" fill="#cde">SLO burndown charts</text>
+    <text x="85" y="62" text-anchor="middle" font-size="9" fill="#cde">Real-time view</text>
+  </g>
+
+  <!-- Alertas SNS -->
+  <g transform="translate(1200,195)" filter="url(#shadow)">
+    <rect width="170" height="70" rx="5" fill="#c62828"/>
+    <rect x="0" y="0" width="170" height="22" rx="5" fill="#9a1a1a"/>
+    <rect x="0" y="15" width="170" height="7" fill="#9a1a1a"/>
+    <text x="85" y="14" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Alertas → SNS</text>
+    <text x="85" y="34" text-anchor="middle" font-size="9" fill="#ffcdd2">P1: PagerDuty (inmediato)</text>
+    <text x="85" y="48" text-anchor="middle" font-size="9" fill="#ffcdd2">P2: Slack canal #ops</text>
+    <text x="85" y="62" text-anchor="middle" font-size="9" fill="#ffcdd2">P3: Email diario</text>
+  </g>
+
+  <!-- Auto-scaling -->
+  <g transform="translate(1200,290)" filter="url(#shadow)">
+    <rect width="170" height="70" rx="5" fill="#2e7d32"/>
+    <rect x="0" y="0" width="170" height="22" rx="5" fill="#1b5e20"/>
+    <rect x="0" y="15" width="170" height="7" fill="#1b5e20"/>
+    <text x="85" y="14" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Auto Scaling</text>
+    <text x="85" y="34" text-anchor="middle" font-size="9" fill="#c8e6c9">Target: CPU 60%</text>
+    <text x="85" y="48" text-anchor="middle" font-size="9" fill="#c8e6c9">Scale out: +2 tasks</text>
+    <text x="85" y="62" text-anchor="middle" font-size="9" fill="#c8e6c9">Cooldown: 60 s</text>
+  </g>
+
+  <!-- Runbook -->
+  <g transform="translate(1200,385)" filter="url(#shadow)">
+    <rect width="170" height="70" rx="5" fill="#5a3e8b"/>
+    <rect x="0" y="0" width="170" height="22" rx="5" fill="#3e2870"/>
+    <rect x="0" y="15" width="170" height="7" fill="#3e2870"/>
+    <text x="85" y="14" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">Runbooks</text>
+    <text x="85" y="34" text-anchor="middle" font-size="9" fill="#e0d0ff">SSM Automation</text>
+    <text x="85" y="48" text-anchor="middle" font-size="9" fill="#e0d0ff">Auto-remediation scripts</text>
+    <text x="85" y="62" text-anchor="middle" font-size="9" fill="#e0d0ff">DR failover procedure</text>
+  </g>
+
+  <!-- Arrows pipeline → response -->
+  <line x1="1150" y1="183" x2="1200" y2="135" stroke="#555" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="1150" y1="283" x2="1200" y2="230" stroke="#555" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="1150" y1="383" x2="1200" y2="325" stroke="#555" stroke-width="1" marker-end="url(#arrow)"/>
+  <line x1="1150" y1="483" x2="1200" y2="420" stroke="#555" stroke-width="1" marker-end="url(#arrow)"/>
+
+  <!-- ══ CIRCUIT BREAKER DETAIL ══ -->
+  <rect x="40" y="575" width="500" height="240" rx="8" fill="#fff" stroke="#c62828" stroke-width="1.5" stroke-dasharray="6,3" filter="url(#shadow)"/>
+  <rect x="40" y="575" width="500" height="28" rx="8" fill="#c62828"/>
+  <rect x="40" y="591" width="500" height="12" fill="#c62828"/>
+  <text x="290" y="594" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">Circuit Breaker — Resilience4j (detalle de estados)</text>
+
+  <!-- State machine -->
+  <!-- CLOSED -->
+  <circle cx="130" cy="660" r="40" fill="#2e7d32"/>
+  <text x="130" y="656" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">CLOSED</text>
+  <text x="130" y="670" text-anchor="middle" font-size="9" fill="#c8e6c9">Flujo normal</text>
+
+  <!-- OPEN -->
+  <circle cx="290" cy="660" r="40" fill="#c62828"/>
+  <text x="290" y="656" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">OPEN</text>
+  <text x="290" y="670" text-anchor="middle" font-size="9" fill="#ffcdd2">Fallback activo</text>
+
+  <!-- HALF-OPEN -->
+  <circle cx="450" cy="660" r="40" fill="#f0a500"/>
+  <text x="450" y="656" text-anchor="middle" font-size="10" font-weight="bold" fill="#fff">HALF</text>
+  <text x="450" y="670" text-anchor="middle" font-size="9" fill="#fff">OPEN</text>
+
+  <!-- Transitions -->
+  <path d="M 168 645 L 250 645" stroke="#c62828" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+  <text x="209" y="638" text-anchor="middle" font-size="8" fill="#c62828">5 fallos / 50%</text>
+
+  <path d="M 450 620 L 450 600 L 290 600 L 290 620" stroke="#2e7d32" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+  <text x="370" y="595" text-anchor="middle" font-size="8" fill="#2e7d32">prueba exitosa</text>
+
+  <path d="M 330 645 L 410 645" stroke="#f0a500" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+  <text x="370" y="638" text-anchor="middle" font-size="8" fill="#f0a500">wait 30 s</text>
+
+  <path d="M 410 675 L 330 675" stroke="#c62828" stroke-width="1.5" marker-end="url(#arrow)" fill="none"/>
+  <text x="370" y="688" text-anchor="middle" font-size="8" fill="#c62828">prueba falla → reabre</text>
+
+  <text x="55" y="785" font-size="9" fill="#555">Configuración: slidingWindowSize=10 · failureRateThreshold=50% · waitDurationInOpenState=30s</text>
+  <text x="55" y="800" font-size="9" fill="#555">Fallback: Customer Service → datos desde Redis (caché) si Core falla. Sin fallback → 503 con retry-after.</text>
+
+  <!-- ══ API VERSIONING ══ -->
+  <rect x="570" y="640" width="800" height="190" rx="8" fill="#fff" stroke="#6b2d8b" stroke-width="1.5" stroke-dasharray="6,3" filter="url(#shadow)"/>
+  <rect x="570" y="640" width="800" height="28" rx="8" fill="#6b2d8b"/>
+  <rect x="570" y="656" width="800" height="12" fill="#6b2d8b"/>
+  <text x="970" y="659" text-anchor="middle" font-size="11" font-weight="bold" fill="#fff">API Versioning Strategy — URI Path (/v1/ → /v2/)</text>
+
+  <text x="590" y="695" font-size="10" font-weight="bold" fill="#4e1f6b">Reglas de convivencia de versiones:</text>
+  <text x="590" y="714" font-size="9" fill="#333">• API Gateway expone /v1/ y /v2/ simultáneamente. Los microservicios internos no saben de versiones.</text>
+  <text x="590" y="730" font-size="9" fill="#333">• Política de deprecación: 6 meses de notice mínimo antes de dar de baja /v1/. Cabecera Sunset: en la respuesta.</text>
+  <text x="590" y="746" font-size="9" fill="#333">• Breaking changes (campos eliminados, tipos cambiados) → siempre nueva versión mayor (/v2/).</text>
+  <text x="590" y="762" font-size="9" fill="#333">• Additive changes (nuevos campos opcionales) → misma versión, backward-compatible.</text>
+  <text x="590" y="778" font-size="9" fill="#333">• Apps móviles desplegadas en producción pueden usar /v1/ hasta que se fuerce update mínimo (min_version en app stores).</text>
+
+  <rect x="590" y="790" width="760" height="28" rx="4" fill="#f3e5f5"/>
+  <text x="970" y="802" text-anchor="middle" font-size="9" fill="#4e1f6b" font-weight="bold">Ejemplo:</text>
+  <text x="970" y="812" text-anchor="middle" font-size="9" fill="#4e1f6b">GET /v1/movements/{id}  →  rewrite interno  →  movementsService:8080/movements/{id}  (sin versión interna)</text>
+</svg>

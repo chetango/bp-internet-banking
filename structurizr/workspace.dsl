@@ -88,10 +88,11 @@ workspace "BP Internet Banking" "Arquitectura de solución para el canal digital
             }
 
             onboardingService = container "Onboarding Service" "Flujo de vinculación de nuevos clientes. Coordina reconocimiento facial, validación de identidad y registro en Cognito." "Node.js / NestJS" "Microservice" {
-                livenessCheck     = component "Liveness Check"       "Invoca AWS Rekognition FaceSearch y CreateFaceLivenessSession para verificar que es una persona real." "AWS Rekognition SDK"
-                identityValidator = component "Identity Validator"   "Compara rostro capturado con documento de identidad (cédula)." "NestJS Service"
+                livenessCheck     = component "Liveness Check"       "Invoca AWS Rekognition FaceSearch y CreateFaceLivenessSession para verificar que es una persona real. Circuit Breaker con fallback a cola de reintentos." "AWS Rekognition SDK + Resilience4j"
+                identityValidator = component "Identity Validator"   "Compara rostro capturado con documento de identidad (cédula). Similarity threshold > 90%." "NestJS Service"
                 userProvisioning  = component "User Provisioning"    "Crea el usuario en Cognito User Pool y asigna grupo y atributos." "AWS Cognito SDK"
                 biometricRegistry = component "Biometric Registry"   "Registra el template biométrico para futuras autenticaciones." "NestJS Service"
+                onboardingCircuitBreaker = component "Circuit Breaker" "Protege llamadas a Rekognition. Abre tras 3 fallos. Fallback: encola solicitud para reintento diferido." "Resilience4j CircuitBreaker"
             }
 
             notificationService = container "Notification Service" "Envía notificaciones al cliente por múltiples canales. Garantiza entrega por al menos 2 canales según norma." "Node.js / NestJS" "Microservice" {
@@ -176,21 +177,21 @@ workspace "BP Internet Banking" "Arquitectura de solución para el canal digital
         bffWeb -> apiGateway "Rutea peticiones" "HTTPS"
         bffMobile -> apiGateway "Rutea peticiones" "HTTPS"
 
-        apiGateway -> authService "Valida tokens" "HTTPS"
-        apiGateway -> customerService "Consulta datos del cliente" "HTTPS"
-        apiGateway -> accountService "Consulta saldos y productos" "HTTPS"
-        apiGateway -> movementsService "Consulta movimientos" "HTTPS"
-        apiGateway -> transferService "Ejecuta transferencias" "HTTPS"
-        apiGateway -> paymentService "Ejecuta pagos interbancarios" "HTTPS"
-        apiGateway -> onboardingService "Gestiona vinculación de cliente" "HTTPS"
-        apiGateway -> auditService "Consulta auditoría (backoffice)" "HTTPS"
+        apiGateway -> authService "Valida tokens [v1]" "HTTPS"
+        apiGateway -> customerService "Consulta datos del cliente [v1]" "HTTPS"
+        apiGateway -> accountService "Consulta saldos y productos [v1]" "HTTPS"
+        apiGateway -> movementsService "Consulta movimientos [v1, v2 disponible]" "HTTPS"
+        apiGateway -> transferService "Ejecuta transferencias [v1]" "HTTPS"
+        apiGateway -> paymentService "Ejecuta pagos interbancarios [v1]" "HTTPS"
+        apiGateway -> onboardingService "Gestiona vinculación de cliente [v1]" "HTTPS"
+        apiGateway -> auditService "Consulta auditoría backoffice [v1]" "HTTPS"
 
         authService -> cognitoIdP "Delega autenticación y emisión de tokens" "OAuth2 / OIDC"
-        customerService -> coreSystem "Consulta datos básicos del cliente" "REST/HTTPS"
-        customerService -> enrichmentSystem "Consulta datos en detalle" "REST/HTTPS"
+        customerService -> coreSystem "Consulta datos básicos del cliente [Circuit Breaker: Resilience4j, fallback=Redis]" "REST/HTTPS"
+        customerService -> enrichmentSystem "Consulta datos en detalle [Circuit Breaker: Resilience4j, fallback=datos básicos]" "REST/HTTPS"
         customerService -> cacheLayer "Lee y escribe datos de cliente frecuente" "Redis Protocol"
-        accountService -> coreSystem "Consulta productos y saldos" "REST/HTTPS"
-        movementsService -> coreSystem "Delega escritura de movimientos" "REST/HTTPS"
+        accountService -> coreSystem "Consulta productos y saldos [Circuit Breaker: Resilience4j]" "REST/HTTPS"
+        movementsService -> coreSystem "Delega escritura de movimientos [Circuit Breaker: Resilience4j]" "REST/HTTPS"
         movementsService -> movementsReadDb "Lee historial de movimientos" "JDBC"
         movementsService -> eventBus "Publica MovementRegistered" "SQS"
         transferService -> mainDb "Persiste estado de saga" "JDBC"
@@ -209,6 +210,16 @@ workspace "BP Internet Banking" "Arquitectura de solución para el canal digital
         auditService -> eventBus "Consume todos los eventos de negocio" "SQS"
         auditService -> auditDb "Persiste eventos en modo append-only" "DynamoDB SDK"
         mainDb -> movementsReadDb "Replicación continua" "RDS Replication"
+
+        # ── OBSERVABILIDAD ─────────────────────────────
+        # Todos los contenedores emiten métricas, logs y trazas
+        authService -> monitoringSystem "Métricas: latencia p99, error rate, circuit breaker state" "CloudWatch SDK + X-Ray"
+        customerService -> monitoringSystem "Métricas: cache hit rate, fallback rate, CB state" "CloudWatch SDK + X-Ray"
+        movementsService -> monitoringSystem "Métricas: CQRS read/write split, p99 latencia" "CloudWatch SDK + X-Ray"
+        transferService -> monitoringSystem "Métricas: saga success/compensation rate" "CloudWatch SDK + X-Ray"
+        paymentService -> monitoringSystem "Métricas: ACH/SWIFT success rate, latencia externa" "CloudWatch SDK + X-Ray"
+        apiGateway -> monitoringSystem "Métricas: RPS, throttling, 4xx/5xx por ruta y versión" "CloudWatch"
+        onboardingService -> monitoringSystem "Métricas: liveness success, rekognition latencia, CB state" "CloudWatch SDK + X-Ray"
     }
 
     views {
