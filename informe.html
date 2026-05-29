@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Informe de Arquitectura — BP Internet Banking</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-size: 13px;
+      color: #1a1a2e;
+      background: #fff;
+      line-height: 1.6;
+    }
+
+    /* ── Print button (hidden in print) ── */
+    .print-bar {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: #1168bd;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 32px;
+      z-index: 100;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      font-size: 13px;
+    }
+    .print-bar span { opacity: 0.85; }
+    .btn-print {
+      background: #fff;
+      color: #1168bd;
+      border: none;
+      border-radius: 6px;
+      padding: 8px 22px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-print:hover { background: #e3f2fd; }
+
+    /* ── Document ── */
+    .doc {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 72px 48px 80px;
+    }
+
+    /* ── Cover ── */
+    .cover {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      border-bottom: 4px solid #1168bd;
+      padding-bottom: 60px;
+      page-break-after: always;
+    }
+    .cover-logo {
+      width: 56px; height: 56px;
+      background: #1168bd;
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 28px;
+      margin-bottom: 40px;
+    }
+    .cover-badge {
+      display: inline-block;
+      background: #e3f2fd;
+      color: #1168bd;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+    }
+    .cover h1 {
+      font-size: 38px;
+      font-weight: 800;
+      color: #0d1b3e;
+      line-height: 1.2;
+      margin-bottom: 12px;
+    }
+    .cover h2 {
+      font-size: 20px;
+      font-weight: 400;
+      color: #4a5568;
+      margin-bottom: 40px;
+    }
+    .cover-meta {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+      margin-top: 40px;
+      padding-top: 40px;
+      border-top: 1px solid #e2e8f0;
+    }
+    .cover-meta-item label {
+      display: block;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: #a0aec0;
+      margin-bottom: 4px;
+    }
+    .cover-meta-item span {
+      font-size: 14px;
+      font-weight: 600;
+      color: #2d3748;
+    }
+    .cover-abstract {
+      margin-top: 40px;
+      padding: 20px 24px;
+      background: #f7fafc;
+      border-left: 4px solid #1168bd;
+      border-radius: 0 8px 8px 0;
+      font-size: 13px;
+      color: #4a5568;
+      line-height: 1.7;
+    }
+
+    /* ── TOC ── */
+    .toc {
+      page-break-after: always;
+    }
+    .toc h2 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #0d1b3e;
+      margin-bottom: 24px;
+      padding-bottom: 10px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .toc-section { margin-bottom: 6px; }
+    .toc-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 0;
+      border-bottom: 1px dotted #e2e8f0;
+      font-size: 13px;
+      color: #2d3748;
+    }
+    .toc-item.indent { padding-left: 20px; font-size: 12px; color: #718096; }
+    .toc-num { color: #a0aec0; font-size: 12px; }
+    .toc-title { font-weight: 600; }
+    .toc-item.indent .toc-title { font-weight: 400; }
+
+    /* ── Sections ── */
+    section {
+      margin-bottom: 48px;
+    }
+    section.page-break {
+      page-break-before: always;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid #e2e8f0;
+    }
+    .section-number {
+      background: #1168bd;
+      color: #fff;
+      font-size: 12px;
+      font-weight: 700;
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .section-header h2 {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0d1b3e;
+    }
+
+    h3 {
+      font-size: 15px;
+      font-weight: 700;
+      color: #1168bd;
+      margin: 20px 0 10px;
+    }
+    h4 {
+      font-size: 13px;
+      font-weight: 700;
+      color: #2d3748;
+      margin: 14px 0 6px;
+    }
+    p { margin-bottom: 10px; color: #4a5568; }
+    ul, ol { padding-left: 20px; margin-bottom: 10px; }
+    li { margin-bottom: 4px; color: #4a5568; }
+    strong { color: #2d3748; }
+    code {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      border-radius: 3px;
+      padding: 1px 5px;
+      font-family: 'Consolas', monospace;
+      font-size: 11.5px;
+      color: #c7254e;
+    }
+
+    /* ── Info box ── */
+    .info-box {
+      background: #f7fafc;
+      border-left: 4px solid #1168bd;
+      border-radius: 0 8px 8px 0;
+      padding: 14px 18px;
+      margin: 16px 0;
+    }
+    .info-box.green { border-color: #2e7d32; }
+    .info-box.orange { border-color: #e06c00; }
+    .info-box.red { border-color: #c62828; }
+    .info-box p { margin-bottom: 0; }
+
+    /* ── Tables ── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      margin: 16px 0;
+    }
+    thead tr { background: #f0f4f8; }
+    th {
+      padding: 9px 12px;
+      text-align: left;
+      font-weight: 700;
+      color: #2d3748;
+      border-bottom: 2px solid #cbd5e0;
+      white-space: nowrap;
+    }
+    td {
+      padding: 8px 12px;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: top;
+      color: #4a5568;
+    }
+    tr:nth-child(even) td { background: #f7fafc; }
+    .td-right { text-align: right; font-weight: 600; }
+    .total-row td { background: #e8f5e9 !important; font-weight: 700; color: #1a1a2e; }
+
+    /* ── Tags ── */
+    .tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+    .tag {
+      font-size: 10.5px;
+      font-weight: 600;
+      padding: 3px 9px;
+      border-radius: 4px;
+    }
+    .tag-blue { background: #dbeafe; color: #1e40af; }
+    .tag-green { background: #dcfce7; color: #166534; }
+    .tag-orange { background: #ffedd5; color: #9a3412; }
+    .tag-red { background: #fee2e2; color: #991b1b; }
+
+    /* ── ADR card ── */
+    .adr-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 20px;
+      page-break-inside: avoid;
+    }
+    .adr-card h3 { margin-top: 0; }
+    .decision-block {
+      border-left: 3px solid #1168bd;
+      padding: 8px 12px;
+      margin: 10px 0;
+      background: #f7fafc;
+      border-radius: 0 6px 6px 0;
+    }
+    .decision-block.green { border-color: #2e7d32; }
+    .decision-block strong { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; color: #718096; margin-bottom: 4px; }
+
+    /* ── SLO table ── */
+    .slo-table td:first-child { font-weight: 600; color: #2d3748; }
+
+    /* ── Compliance card ── */
+    .compliance-card {
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin-bottom: 16px;
+      page-break-inside: avoid;
+    }
+    .compliance-card h3 { margin-top: 0; }
+
+    /* ── Diagrams ── */
+    .diagram-embed {
+      width: 100%;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 16px 0;
+      page-break-inside: avoid;
+    }
+    .diagram-caption {
+      font-size: 11px;
+      color: #718096;
+      text-align: center;
+      padding: 8px;
+      background: #f7fafc;
+      border-top: 1px solid #e2e8f0;
+    }
+    .diagram-embed img, .diagram-embed object {
+      width: 100%;
+      display: block;
+    }
+
+    /* ── Radar scores ── */
+    .radar-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin: 16px 0;
+    }
+    .radar-score-item {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px;
+      page-break-inside: avoid;
+    }
+    .radar-score-item .label { font-size: 11px; color: #718096; margin-bottom: 4px; }
+    .radar-score-item .score { font-size: 22px; font-weight: 800; }
+    .radar-score-bar {
+      height: 5px;
+      background: #e2e8f0;
+      border-radius: 3px;
+      margin-top: 6px;
+    }
+    .radar-score-bar-fill {
+      height: 100%;
+      border-radius: 3px;
+    }
+
+    /* ── Footer ── */
+    .doc-footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 2px solid #e2e8f0;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: #a0aec0;
+    }
+
+    /* ── Print ── */
+    @media print {
+      .print-bar { display: none !important; }
+      body { padding-top: 0; }
+      .doc { padding: 32px 48px 60px; }
+      a { color: inherit; text-decoration: none; }
+      .adr-card, .compliance-card, .radar-score-item { page-break-inside: avoid; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Print bar -->
+<div class="print-bar">
+  <span>Informe de Arquitectura — BP Internet Banking</span>
+  <button class="btn-print" onclick="window.print()">🖨️ Descargar / Imprimir PDF</button>
+</div>
+
+<div class="doc" style="padding-top: 80px;">
+
+  <!-- ══════════════════════════════════════════════ COVER ══ -->
+  <div class="cover">
+    <div class="cover-logo">🏦</div>
+    <div class="cover-badge">Documento de Arquitectura</div>
+    <h1>BP Internet Banking</h1>
+    <h2>Arquitectura de Solución — Modelo C4 · AWS · Microservicios</h2>
+    <div class="cover-abstract">
+      Este documento describe la arquitectura completa del canal digital bancario BP Internet Banking.
+      Cubre el modelo C4 (Contexto, Contenedores y Componentes), decisiones arquitectónicas con justificación
+      técnica y normativa, cumplimiento regulatorio colombiano, estrategia de costos AWS y métricas de madurez.
+      La solución está diseñada para alta disponibilidad (99.95%), cumplimiento PCI-DSS v4.0 y
+      Circular SFC 052/2007, y escalabilidad horizontal sin rediseño hasta 2 000 000 MAU.
+    </div>
+    <div class="cover-meta">
+      <div class="cover-meta-item">
+        <label>Autor</label>
+        <span>Arquitecto de Soluciones</span>
+      </div>
+      <div class="cover-meta-item">
+        <label>Fecha</label>
+        <span>Mayo 2026</span>
+      </div>
+      <div class="cover-meta-item">
+        <label>Versión</label>
+        <span>1.0.0</span>
+      </div>
+      <div class="cover-meta-item">
+        <label>Clasificación</label>
+        <span>Confidencial</span>
+      </div>
+      <div class="cover-meta-item">
+        <label>Plataforma</label>
+        <span>AWS (us-east-1 + us-west-2)</span>
+      </div>
+      <div class="cover-meta-item">
+        <label>Stack</label>
+        <span>ECS Fargate · Spring Boot · Flutter · Next.js</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ TOC ══ -->
+  <div class="toc page-break">
+    <h2>Tabla de Contenido</h2>
+    <div class="toc-item"><span class="toc-title">1. Resumen Ejecutivo</span><span class="toc-num">§ 1</span></div>
+    <div class="toc-item"><span class="toc-title">2. Contexto y Alcance</span><span class="toc-num">§ 2</span></div>
+    <div class="toc-item"><span class="toc-title">3. Modelo C4 — Diagramas de Arquitectura</span><span class="toc-num">§ 3</span></div>
+    <div class="toc-item indent"><span class="toc-title">3.1 Nivel 1 — Contexto</span><span class="toc-num">§ 3.1</span></div>
+    <div class="toc-item indent"><span class="toc-title">3.2 Nivel 2 — Contenedores</span><span class="toc-num">§ 3.2</span></div>
+    <div class="toc-item indent"><span class="toc-title">3.3 Nivel 3 — Componentes</span><span class="toc-num">§ 3.3</span></div>
+    <div class="toc-item"><span class="toc-title">4. Decisiones Arquitectónicas (ADR)</span><span class="toc-num">§ 4</span></div>
+    <div class="toc-item indent"><span class="toc-title">4.1  ADR-001 — Nube: AWS sobre Azure</span></div>
+    <div class="toc-item indent"><span class="toc-title">4.2  ADR-002 — Frontend Web: Next.js</span></div>
+    <div class="toc-item indent"><span class="toc-title">4.3  ADR-003 — Mobile: Flutter</span></div>
+    <div class="toc-item indent"><span class="toc-title">4.4  ADR-004 — Auth: OAuth2 PKCE</span></div>
+    <div class="toc-item indent"><span class="toc-title">4.5  ADR-005 — Transferencias: Patrón Saga</span></div>
+    <div class="toc-item indent"><span class="toc-title">4.6  ADR-006 — Movimientos: CQRS</span></div>
+    <div class="toc-item indent"><span class="toc-title">4.7  ADR-007 — Auditoría: Event Sourcing</span></div>
+    <div class="toc-item indent"><span class="toc-title">4.8  ADR-008 — BFF: Backend for Frontend</span></div>
+    <div class="toc-item indent"><span class="toc-title">4.9  ADR-009 — Resiliencia: Circuit Breaker</span></div>
+    <div class="toc-item indent"><span class="toc-title">4.10 ADR-010 — API Versioning: /v1/</span></div>
+    <div class="toc-item indent"><span class="toc-title">4.11 ADR-011 — Secrets Manager + KMS</span></div>
+    <div class="toc-item indent"><span class="toc-title">4.12 ADR-012 — Observabilidad y SLOs</span></div>
+    <div class="toc-item"><span class="toc-title">5. Marco Normativo y Regulatorio</span><span class="toc-num">§ 5</span></div>
+    <div class="toc-item"><span class="toc-title">6. Estrategia de Costos AWS</span><span class="toc-num">§ 6</span></div>
+    <div class="toc-item"><span class="toc-title">7. Madurez Arquitectónica — Radar</span><span class="toc-num">§ 7</span></div>
+    <div class="toc-item"><span class="toc-title">8. Conclusiones</span><span class="toc-num">§ 8</span></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════ § 1 RESUMEN ══ -->
+  <section class="page-break">
+    <div class="section-header">
+      <div class="section-number">1</div>
+      <h2>Resumen Ejecutivo</h2>
+    </div>
+    <p>
+      BP Internet Banking es un canal digital bancario construido sobre una arquitectura de microservicios
+      en AWS, diseñada para soportar las operaciones críticas de una entidad financiera colombiana bajo
+      supervisión de la Superintendencia Financiera de Colombia (SFC).
+    </p>
+    <div class="info-box green">
+      <p><strong>Objetivo principal:</strong> Proveer operaciones bancarias digitales (consultas, transferencias, pagos, onboarding facial)
+      con alta disponibilidad (99.95% SLA), latencia sub-segundo para operaciones de lectura, y
+      cumplimiento total de PCI-DSS v4.0 y Circular SFC 052/2007.</p>
+    </div>
+    <h3>Principios de diseño aplicados</h3>
+    <ul>
+      <li><strong>Desacoplamiento:</strong> 9 microservicios independientes comunicados por eventos (SQS/SNS). Cada servicio tiene su propia base de datos.</li>
+      <li><strong>Alta Disponibilidad:</strong> Multi-AZ en todas las capas con datos. Auto-scaling en ECS Fargate. DR pasivo en us-west-2 con RTO &lt; 15 min.</li>
+      <li><strong>Seguridad por diseño:</strong> OAuth2 PKCE, MFA obligatorio, TLS 1.3 en tránsito, KMS en reposo, WAF + Shield en borde. Zero-trust entre microservicios.</li>
+      <li><strong>Observabilidad nativa:</strong> CloudWatch, X-Ray con Service Map, Container Insights. SLOs definidos y medidos por servicio.</li>
+      <li><strong>Escalabilidad horizontal:</strong> Arquitectura desacoplada permite escalar de 50 000 a 2 000 000 MAU sin rediseño estructural.</li>
+    </ul>
+    <h3>Stack tecnológico principal</h3>
+    <table>
+      <thead><tr><th>Capa</th><th>Tecnología elegida</th><th>Alternativa evaluada</th></tr></thead>
+      <tbody>
+        <tr><td>Frontend Web</td><td>Next.js 14 + App Router</td><td>Angular 17</td></tr>
+        <tr><td>App Móvil</td><td>Flutter 3.x (iOS + Android)</td><td>React Native</td></tr>
+        <tr><td>API Gateway</td><td>AWS API Gateway + Kong</td><td>NGINX + HAProxy</td></tr>
+        <tr><td>Microservicios</td><td>Spring Boot 3.x en ECS Fargate</td><td>EC2 Auto Scaling Groups</td></tr>
+        <tr><td>Base de datos</td><td>RDS PostgreSQL Multi-AZ</td><td>MySQL RDS</td></tr>
+        <tr><td>Caché</td><td>ElastiCache Redis</td><td>Memcached</td></tr>
+        <tr><td>Eventos</td><td>Amazon SQS + SNS</td><td>Apache Kafka (MSK)</td></tr>
+        <tr><td>Identidad / Auth</td><td>Amazon Cognito + OAuth2 PKCE</td><td>Keycloak on-prem</td></tr>
+        <tr><td>Biometría Facial</td><td>AWS Rekognition FaceLiveness</td><td>Azure Face API</td></tr>
+        <tr><td>Secretos</td><td>AWS Secrets Manager + KMS CMK</td><td>SSM Parameter Store</td></tr>
+        <tr><td>Observabilidad</td><td>CloudWatch + X-Ray + Container Insights</td><td>Datadog / New Relic</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <!-- ══════════════════════════════════════════════ § 2 CONTEXTO ══ -->
+  <section class="page-break">
+    <div class="section-header">
+      <div class="section-number">2</div>
+      <h2>Contexto y Alcance</h2>
+    </div>
+    <h3>Actores del sistema</h3>
+    <table>
+      <thead><tr><th>Actor</th><th>Tipo</th><th>Descripción</th></tr></thead>
+      <tbody>
+        <tr><td>Cliente Banco BP</td><td>Usuario final</td><td>Accede a través de SPA Web o App Móvil para consultar saldos, transferir fondos, pagar servicios y completar el onboarding digital.</td></tr>
+        <tr><td>Administrador Bancario</td><td>Usuario interno</td><td>Gestiona usuarios, configura límites de transferencia y accede a reportes de cumplimiento y auditoría.</td></tr>
+        <tr><td>Core Bancario (legado)</td><td>Sistema externo</td><td>Sistema centralizado que contiene los registros maestros de cuentas y saldos. Integración via REST/SOAP.</td></tr>
+        <tr><td>Pasarela de Pagos (PSE)</td><td>Sistema externo</td><td>Procesa pagos a terceros, servicios públicos y recargas.</td></tr>
+        <tr><td>UIAF</td><td>Ente regulador</td><td>Recibe reportes de operaciones inusuales según SARLAFT.</td></tr>
+        <tr><td>AWS Rekognition</td><td>Servicio cloud</td><td>Provee liveness check y face matching para el onboarding biométrico.</td></tr>
+        <tr><td>Amazon Cognito</td><td>Servicio cloud</td><td>Gestiona el ciclo de vida de identidades, tokens JWT y MFA.</td></tr>
+      </tbody>
+    </table>
+    <h3>Funcionalidades en alcance</h3>
+    <ul>
+      <li>Consulta de saldos y movimientos (CQRS, caché Redis)</li>
+      <li>Transferencias entre cuentas propias y terceros (Patrón Saga)</li>
+      <li>Pago de servicios y obligaciones (PSE)</li>
+      <li>Onboarding digital con biometría facial y liveness check</li>
+      <li>Autenticación multifactor (MFA) con OAuth2 Authorization Code + PKCE</li>
+      <li>Auditoría inmutable de todas las operaciones (Event Sourcing + DynamoDB)</li>
+      <li>Notificaciones en tiempo real post-transacción (SNS + SQS)</li>
+    </ul>
+    <div class="info-box orange">
+      <p><strong>Fuera de alcance:</strong> créditos y préstamos, inversiones, seguros, ATM/POS físico, integración con sistemas de terceros distintos a PSE y Core Bancario.</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════ § 3 DIAGRAMAS ══ -->
+  <section class="page-break">
+    <div class="section-header">
+      <div class="section-number">3</div>
+      <h2>Modelo C4 — Diagramas de Arquitectura</h2>
+    </div>
+    <p>
+      Se utiliza el Modelo C4 (Context, Containers, Components, Code) como notación estándar
+      para comunicar la arquitectura en múltiples niveles de abstracción, desde la vista de negocio
+      hasta los componentes internos de cada microservicio.
+    </p>
+
+    <h3>3.1 Nivel 1 — Contexto</h3>
+    <p>Muestra BP Internet Banking como caja negra y sus relaciones con actores y sistemas externos.</p>
+    <div class="diagram-embed">
+      <img src="diagrams/c4-context.svg" alt="C4 Nivel 1 — Contexto"/>
+      <div class="diagram-caption">Figura 1 — C4 Level 1: System Context. BP Internet Banking y sus dependencias externas.</div>
+    </div>
+
+    <h3>3.2 Nivel 2 — Contenedores</h3>
+    <p>Descompone el sistema en contenedores de software: frontends, BFF, API Gateway, microservicios y bases de datos.</p>
+    <div class="diagram-embed">
+      <img src="diagrams/c4-containers.svg" alt="C4 Nivel 2 — Contenedores"/>
+      <div class="diagram-caption">Figura 2 — C4 Level 2: Container Diagram. Todos los contenedores con tecnología y comunicación.</div>
+    </div>
+
+    <h3>3.3 Nivel 3 — Componentes</h3>
+    <p>Se desarrollan los microservicios con mayor complejidad de diseño.</p>
+
+    <h4>Transfer Service — Patrón Saga</h4>
+    <div class="diagram-embed">
+      <img src="diagrams/c4-components-transfer.svg" alt="Transfer Service — Saga"/>
+      <div class="diagram-caption">Figura 3 — Transfer Service: Saga de orquestación con compensación.</div>
+    </div>
+
+    <h4>Movements Service — CQRS</h4>
+    <div class="diagram-embed">
+      <img src="diagrams/c4-components-movements.svg" alt="Movements Service — CQRS"/>
+      <div class="diagram-caption">Figura 4 — Movements Service: Command Query Responsibility Segregation.</div>
+    </div>
+
+    <h4>Audit Service — Event Sourcing</h4>
+    <div class="diagram-embed">
+      <img src="diagrams/c4-components-audit.svg" alt="Audit Service — Event Sourcing"/>
+      <div class="diagram-caption">Figura 5 — Audit Service: Event Sourcing con DynamoDB append-only.</div>
+    </div>
+
+    <h4>Onboarding Service — Biometría + Circuit Breaker</h4>
+    <div class="diagram-embed">
+      <img src="diagrams/c4-components-onboarding.svg" alt="Onboarding — Biometría"/>
+      <div class="diagram-caption">Figura 6 — Onboarding Service: Biometría facial, liveness check y Circuit Breaker Resilience4j.</div>
+    </div>
+
+    <h4>Flujo OAuth2 Authorization Code + PKCE</h4>
+    <div class="diagram-embed">
+      <img src="diagrams/oauth2-flow.svg" alt="OAuth2 + PKCE"/>
+      <div class="diagram-caption">Figura 7 — OAuth2 Authorization Code Flow con PKCE.</div>
+    </div>
+
+    <h4>Infraestructura AWS — Alta Disponibilidad y DR</h4>
+    <div class="diagram-embed">
+      <img src="diagrams/aws-infrastructure.svg" alt="Infraestructura AWS"/>
+      <div class="diagram-caption">Figura 8 — Infraestructura AWS: Multi-AZ, DR pasivo us-west-2, CloudFront, Shield.</div>
+    </div>
+
+    <h4>Observabilidad — Golden Signals + SLOs</h4>
+    <div class="diagram-embed">
+      <img src="diagrams/observability-slos.svg" alt="Observabilidad"/>
+      <div class="diagram-caption">Figura 9 — Observabilidad: Golden Signals, SLOs por servicio, Circuit Breaker state machine.</div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════ § 4 ADRs ══ -->
+  <section class="page-break">
+    <div class="section-header">
+      <div class="section-number">4</div>
+      <h2>Decisiones Arquitectónicas (ADR)</h2>
+    </div>
+    <p>Cada decisión fue evaluada frente a al menos una alternativa y se justifica técnica y normativamente.</p>
+
+    <div class="adr-card">
+      <h3>ADR-001 — ☁️ Nube: AWS sobre Azure</h3>
+      <div class="decision-block"><strong>Decisión</strong>Amazon Web Services como proveedor de nube principal.</div>
+      <div class="decision-block green"><strong>Justificación 1 — Madurez en sector financiero</strong>AWS tiene mayor adopción en banca latinoamericana a 2026. Cognito, Rekognition, Macie, Shield son servicios maduros con certificaciones PCI-DSS y SOC2 propias.</div>
+      <div class="decision-block green"><strong>Justificación 2 — Ecosistema integrado</strong>La combinación Cognito + Rekognition + SQS + DynamoDB resuelve los requerimientos sin necesidad de terceros adicionales, reduciendo la superficie de ataque.</div>
+      <div class="tags"><span class="tag tag-orange">vs Azure AD B2C</span><span class="tag tag-orange">vs Azure Face API</span></div>
+    </div>
+
+    <div class="adr-card">
+      <h3>ADR-002 — ⚛️ Frontend Web: Next.js sobre Angular</h3>
+      <div class="decision-block"><strong>Decisión</strong>Next.js 14 con App Router y RSC como framework para la SPA web.</div>
+      <div class="decision-block green"><strong>Justificación 1 — SSR y Core Web Vitals</strong>Next.js ofrece Server-Side Rendering nativo que mejora el LCP crítico para banca. Una pantalla de saldo carga en &lt;1s percibido.</div>
+      <div class="decision-block green"><strong>Justificación 2 — Ecosistema y talento</strong>React tiene 5× más desarrolladores disponibles que Angular en Colombia. Menor riesgo de bus factor y facilita contratación futura.</div>
+      <div class="tags"><span class="tag tag-orange">Alternativa evaluada: Angular 17</span></div>
+    </div>
+
+    <div class="adr-card">
+      <h3>ADR-003 — 📱 Mobile: Flutter sobre React Native</h3>
+      <div class="decision-block"><strong>Decisión</strong>Flutter 3.x como framework multiplataforma para iOS y Android.</div>
+      <div class="decision-block green"><strong>Justificación 1 — Rendimiento nativo real</strong>Flutter compila a código nativo ARM. No usa JavaScript bridge como React Native, crítico para la cámara del Onboarding facial y la biometría.</div>
+      <div class="decision-block green"><strong>Justificación 2 — Un único codebase estable</strong>Flutter tiene garantía de Google con roadmap de largo plazo. El plugin <code>local_auth</code> soporta FaceID, TouchID y PIN oficialmente.</div>
+      <div class="tags"><span class="tag tag-orange">Alternativa evaluada: React Native</span></div>
+    </div>
+
+    <div class="adr-card">
+      <h3>ADR-004 — 🔐 Autenticación: OAuth2 Authorization Code + PKCE</h3>
+      <div class="decision-block"><strong>Decisión</strong>Authorization Code Flow + PKCE para SPA y App Móvil via Amazon Cognito.</div>
+      <div class="decision-block green"><strong>Justificación 1 — Seguridad contra intercepción</strong>PKCE garantiza que solo el cliente que inició el flujo puede canjear el authorization code. Un atacante MitM que capture el code no puede obtener tokens sin el <code>code_verifier</code>.</div>
+      <div class="decision-block green"><strong>Justificación 2 — Estándar RFC 9700 (OAuth 2.1)</strong>RFC 9700 depreca Implicit Flow y Password Grant. PKCE es el único flujo recomendado para clientes públicos según el estándar vigente.</div>
+      <div class="tags"><span class="tag tag-red">Descartado: Implicit Flow (deprecado)</span><span class="tag tag-red">Descartado: Password Grant</span></div>
+    </div>
+
+    <div class="adr-card">
+      <h3>ADR-005 — 🔄 Transferencias: Patrón Saga con Orquestación</h3>
+      <div class="decision-block"><strong>Decisión</strong>Saga de orquestación con compensación para garantizar consistencia eventual en transferencias distribuidas.</div>
+      <div class="decision-block green"><strong>Justificación 1 — Sin transacción distribuida disponible</strong>El débito ocurre en el Core y el crédito también, sin 2PC disponible entre sistemas heterogéneos. Saga es el único patrón que permite consistencia eventual con compensación automática sin bloqueos.</div>
+      <div class="decision-block green"><strong>Justificación 2 — Trazabilidad regulatoria SFC</strong>Cada paso de la Saga queda persistido en RDS. Si hay disputa, se puede reconstruir exactamente qué pasó, cuándo y el estado de compensación.</div>
+      <div class="tags"><span class="tag tag-orange">Alternativa descartada: 2PC (acoplamiento fuerte)</span></div>
+    </div>
+
+    <div class="adr-card">
+      <h3>ADR-006 — 📖 Movimientos: CQRS con Réplica de Lectura</h3>
+      <div class="decision-block"><strong>Decisión</strong>Command Query Responsibility Segregation con réplica de lectura RDS dedicada para consulta de movimientos.</div>
+      <div class="decision-block green"><strong>Justificación 1 — Ratio lectura/escritura asimétrico</strong>Un cliente típico consulta sus movimientos 10–20 veces por cada 1 que los genera. CQRS permite indexar y optimizar el modelo de lectura sin impactar el Core de escritura.</div>
+      <div class="decision-block green"><strong>Justificación 2 — Desacoplamiento del Core legado</strong>La réplica de lectura absorbe todo el tráfico de consultas, reduciendo la carga del Core en ~90%.</div>
+    </div>
+
+    <div class="adr-card">
+      <h3>ADR-007 — 📝 Auditoría: Event Sourcing con DynamoDB</h3>
+      <div class="decision-block"><strong>Decisión</strong>Event Sourcing con DynamoDB en modo append-only para el log de auditoría. Retención 10 años. Archivado a S3 Glacier.</div>
+      <div class="decision-block green"><strong>Justificación 1 — Inmutabilidad regulatoria (SFC 052)</strong>La Circular SFC 052/2007 exige logs de operaciones que no puedan ser alterados. Event Sourcing por diseño no permite UPDATE ni DELETE — cada acción es un evento nuevo.</div>
+      <div class="decision-block green"><strong>Justificación 2 — Escalabilidad DynamoDB</strong>DynamoDB escala horizontalmente sin límite. A 10 años de retención con millones de eventos, no hay degradación de rendimiento en escrituras que PostgreSQL no podría garantizar.</div>
+    </div>
+
+    <div class="adr-card">
+      <h3>ADR-008 — 🧠 BFF: Backend for Frontend (×2)</h3>
+      <div class="decision-block"><strong>Decisión</strong>Un BFF específico para SPA Web y otro para App Móvil, desplegados como microservicios independientes en ECS Fargate.</div>
+      <div class="decision-block green"><strong>Justificación 1 — Contratos independientes</strong>La SPA necesita datos enriquecidos para un dashboard complejo. La app móvil necesita payloads mínimos para bajo ancho de banda. Un API único genera acoplamiento y versiones conflictivas.</div>
+      <div class="decision-block green"><strong>Justificación 2 — Seguridad diferenciada</strong>El BFF Web maneja cookies <code>httpOnly</code> seguras. El BFF Mobile maneja tokens en memoria + certificate pinning. Separar permite aplicar políticas de seguridad específicas a cada canal.</div>
+    </div>
+
+    <div class="adr-card">
+      <h3>ADR-009 — ⚡ Resiliencia: Circuit Breaker con Resilience4j</h3>
+      <div class="decision-block"><strong>Decisión</strong>Patrón Circuit Breaker con Resilience4j en todos los microservicios Spring Boot que llaman al Core Bancario o servicios externos.</div>
+      <div class="decision-block green"><strong>Justificación 1 — Protección del Core legado</strong>El Core tiene SLA ~99.5%. Sin circuit breaker, un timeout provoca cascada de fallos. El breaker abre tras 5 fallos consecutivos y retorna respuesta degradada (caché Redis) durante 30 segundos.</div>
+      <div class="decision-block green"><strong>Justificación 2 — Observabilidad del estado</strong>Resilience4j expone métricas (CLOSED/OPEN/HALF_OPEN) a CloudWatch. Se generan alarmas automáticas cuando el breaker abre, permitiendo reacción proactiva antes de que el cliente lo perciba.</div>
+      <div class="tags"><span class="tag tag-orange">Alternativa evaluada: Istio (descartado — complejidad en ECS)</span><span class="tag tag-red">Descartado: Hystrix (deprecated)</span></div>
+    </div>
+
+    <div class="adr-card">
+      <h3>ADR-010 — 🔢 API Versioning: URI Path (/v1/)</h3>
+      <div class="decision-block"><strong>Decisión</strong>Versioning por path URI (<code>/v1/movements</code>, <code>/v2/movements</code>) gestionado en API Gateway. Política de deprecación con 6 meses de notice.</div>
+      <div class="decision-block green"><strong>Justificación 1 — Visibilidad en logs y trazas</strong>Las versiones en el URI son visibles en CloudWatch y X-Ray sin configuración adicional. Header versioning es más purista pero introduce complejidad en debugging y caching de CloudFront.</div>
+      <div class="decision-block green"><strong>Justificación 2 — Compatibilidad con clientes móviles</strong>Las apps Flutter en producción no se actualizan instantáneamente. La coexistencia de <code>/v1/</code> y <code>/v2/</code> permite migración gradual sin forzar actualizaciones.</div>
+      <div class="tags"><span class="tag tag-orange">Alternativa: Header Versioning</span><span class="tag tag-orange">Alternativa: Query param</span></div>
+    </div>
+
+    <div class="adr-card">
+      <h3>ADR-011 — 🔑 Secrets Management: AWS Secrets Manager + KMS CMK</h3>
+      <div class="decision-block"><strong>Decisión</strong>Todos los secretos se almacenan en AWS Secrets Manager con rotación automática. Ningún secreto en variables de entorno ni en código fuente. Encriptación con KMS Customer Managed Key.</div>
+      <div class="decision-block green"><strong>Justificación 1 — Rotación sin downtime</strong>Secrets Manager rota credenciales RDS automáticamente cada 30 días via Lambda. El servicio en ECS recibe el secreto nuevo sin reinicio gracias al SDK que llama <code>GetSecretValue</code> en cada conexión.</div>
+      <div class="decision-block green"><strong>Justificación 2 — Cumplimiento PCI-DSS Req. 3.5</strong>PCI-DSS v4.0 exige protección de claves criptográficas. Secrets Manager con KMS CMK cumple el requisito y genera audit trail via CloudTrail.</div>
+      <div class="tags"><span class="tag tag-red">Prohibido: secretos en .env o repositorio</span><span class="tag tag-orange">Descartado: SSM Parameter Store (sin rotación nativa)</span></div>
+    </div>
+
+    <div class="adr-card">
+      <h3>ADR-012 — 📊 Observabilidad: Golden Signals + SLOs por Servicio</h3>
+      <div class="decision-block"><strong>Decisión</strong>Estrategia de observabilidad basada en los 4 Golden Signals con SLOs definidos por servicio y alertas proactivas.</div>
+      <div class="decision-block green"><strong>SLOs definidos</strong>
+        <ul style="margin-top:6px;font-size:12px;">
+          <li>Auth Service: p99 latencia &lt; 300 ms · Error rate &lt; 0.1%</li>
+          <li>Movements (read): p99 &lt; 200 ms · Availability 99.9%</li>
+          <li>Transfer Service: p99 &lt; 2 s · Error rate &lt; 0.05%</li>
+          <li>Onboarding: p99 &lt; 5 s · Liveness success &gt; 95%</li>
+          <li>API Gateway: p99 &lt; 100 ms overhead · Availability 99.95%</li>
+        </ul>
+      </div>
+      <div class="decision-block green"><strong>Justificación — Alertas proactivas vs reactivas</strong>Con SLOs y error budgets, se detecta degradación antes de impactar al cliente. CloudWatch Composite Alarms y X-Ray Service Map muestran el grafo de dependencias en tiempo real.</div>
+      <div class="tags"><span class="tag tag-blue">CloudWatch</span><span class="tag tag-blue">X-Ray</span><span class="tag tag-blue">Container Insights</span><span class="tag tag-blue">Error Budget Policy</span></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════ § 5 COMPLIANCE ══ -->
+  <section class="page-break">
+    <div class="section-header">
+      <div class="section-number">5</div>
+      <h2>Marco Normativo y Regulatorio</h2>
+    </div>
+    <p>La arquitectura fue diseñada con cumplimiento regulatorio como restricción no negociable, no como capa adicional.</p>
+
+    <div class="compliance-card">
+      <h3>🔒 PCI-DSS v4.0</h3>
+      <p><strong>Aplica:</strong> toda transacción que involucre datos de tarjeta o instrumentos de pago.</p>
+      <ul>
+        <li><strong>Req. 2:</strong> No usar defaults de fábrica — Secrets Manager con rotación automática.</li>
+        <li><strong>Req. 6:</strong> Sistemas seguros — OWASP Top 10 implementado en arquitectura.</li>
+        <li><strong>Req. 8:</strong> MFA obligatorio — Cognito con segundo factor en todas las operaciones.</li>
+        <li><strong>Req. 10:</strong> Logs de auditoría inmutables — Event Sourcing + DynamoDB append-only.</li>
+        <li><strong>Req. 12:</strong> Política de seguridad — documentada y vinculada al SGSI ISO 27001.</li>
+      </ul>
+      <div class="tags"><span class="tag tag-red">Mandatorio</span></div>
+    </div>
+
+    <div class="compliance-card">
+      <h3>📋 Circular SFC 052/2007</h3>
+      <p><strong>Aplica:</strong> canales electrónicos de entidades vigiladas por la Superintendencia Financiera de Colombia.</p>
+      <ul>
+        <li>Doble factor de autenticación para canales digitales — implementado con Cognito MFA.</li>
+        <li>Cifrado en tránsito (TLS 1.3) y en reposo (KMS CMK).</li>
+        <li>Logs de operaciones mínimo 10 años — DynamoDB + S3 Glacier.</li>
+        <li>Plan de continuidad BCP/DRP — DR pasivo us-west-2, RTO &lt; 15 min.</li>
+        <li>Notificación obligatoria post-transacción — SNS → notificaciones push / email.</li>
+      </ul>
+      <div class="tags"><span class="tag tag-red">Mandatorio Colombia</span></div>
+    </div>
+
+    <div class="compliance-card">
+      <h3>🧾 Ley 1581/2012 — Habeas Data</h3>
+      <p><strong>Aplica:</strong> tratamiento de datos personales de clientes colombianos.</p>
+      <ul>
+        <li>Consentimiento explícito para datos biométricos en el flujo de onboarding.</li>
+        <li>Derecho a conocer, actualizar y suprimir datos — implementado en el perfil de usuario.</li>
+        <li>Registro ante SIC de bases de datos con datos sensibles.</li>
+        <li>Datos biométricos cifrados en reposo con KMS CMK. No se almacenan imágenes del rostro.</li>
+      </ul>
+      <div class="tags"><span class="tag tag-red">Mandatorio Colombia</span></div>
+    </div>
+
+    <div class="compliance-card">
+      <h3>💳 FATF / GAFI — AML/KYC (SARLAFT)</h3>
+      <p><strong>Aplica:</strong> prevención de lavado de activos y financiamiento del terrorismo.</p>
+      <ul>
+        <li>Onboarding facial como mecanismo de KYC digital — Rekognition + liveness check.</li>
+        <li>Límites de transferencia configurables por nivel de riesgo del cliente.</li>
+        <li>Registro de operaciones inusuales para reporte a UIAF.</li>
+        <li>Monitoreo de patrones transaccionales — Audit Service con Event Sourcing.</li>
+      </ul>
+      <div class="tags"><span class="tag tag-red">Mandatorio</span></div>
+    </div>
+
+    <div class="compliance-card">
+      <h3>🔑 OWASP Top 10 — 2025</h3>
+      <p><strong>Aplica:</strong> seguridad de aplicaciones web y APIs.</p>
+      <table>
+        <thead><tr><th>Riesgo OWASP</th><th>Control implementado</th></tr></thead>
+        <tbody>
+          <tr><td>A01 — Broken Access Control</td><td>RBAC en Cognito + API Gateway policies</td></tr>
+          <tr><td>A02 — Cryptographic Failures</td><td>TLS 1.3 en tránsito · KMS CMK en reposo</td></tr>
+          <tr><td>A03 — Injection</td><td>ORMs (Spring Data JPA) + prepared statements</td></tr>
+          <tr><td>A05 — Security Misconfiguration</td><td>IaC (Terraform) con revisión de seguridad</td></tr>
+          <tr><td>A07 — Auth Failures</td><td>MFA + rate limiting en API GW + account lockout</td></tr>
+          <tr><td>A09 — Security Logging</td><td>Event Sourcing + CloudWatch + CloudTrail</td></tr>
+        </tbody>
+      </table>
+      <div class="tags"><span class="tag tag-red">Implementado en arquitectura</span></div>
+    </div>
+
+    <div class="compliance-card">
+      <h3>🌐 ISO 27001 / 27005</h3>
+      <p><strong>Aplica:</strong> gestión de seguridad de la información.</p>
+      <ul>
+        <li>SGSI implementado con políticas, controles y métricas medibles.</li>
+        <li>Gestión de riesgos tecnológicos documentada con análisis de impacto.</li>
+        <li>Pruebas de penetración periódicas (mínimo anual).</li>
+        <li>Gestión de vulnerabilidades y parches — Amazon Inspector integrado en CI/CD.</li>
+      </ul>
+      <div class="tags"><span class="tag tag-blue">Best Practice</span></div>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════ § 6 COSTOS ══ -->
+  <section class="page-break">
+    <div class="section-header">
+      <div class="section-number">6</div>
+      <h2>Estrategia de Costos AWS</h2>
+    </div>
+    <p>
+      Estimados mensuales para una carga inicial de <strong>~50 000 MAU</strong> con pico de 500 req/s.
+      Región principal: <code>us-east-1</code>. DR pasivo en <code>us-west-2</code>.
+      Calculado con AWS Pricing Calculator (mayo 2026).
+    </p>
+
+    <h3>Desglose por servicio</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Servicio AWS</th>
+          <th>Configuración</th>
+          <th style="text-align:right">Costo/mes (USD)</th>
+          <th>Estrategia de optimización</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>ECS Fargate — Microservicios</strong></td><td>9 servicios × 0.5 vCPU / 1 GB RAM, auto-scaling 2–6 tasks</td><td class="td-right">~$420</td><td>Savings Plans Compute 1 año → −20%</td></tr>
+        <tr><td><strong>ECS Fargate — BFF (×2)</strong></td><td>2 BFF × 0.5 vCPU / 1 GB RAM, min 2 tasks</td><td class="td-right">~$95</td><td>Consolidado con Savings Plan de microservicios</td></tr>
+        <tr><td><strong>RDS PostgreSQL Multi-AZ</strong></td><td>db.t4g.medium Multi-AZ + 100 GB gp3 + Read Replica</td><td class="td-right">~$310</td><td>Reserved Instance 1 año → −40% (~$186/mes)</td></tr>
+        <tr><td><strong>Amazon DynamoDB</strong></td><td>On-Demand. ~5M escrituras/mes, 2M lecturas/mes</td><td class="td-right">~$28</td><td>TTL + S3 Glacier para archivado &gt;2 años → −80% almacenamiento</td></tr>
+        <tr><td><strong>ElastiCache Redis</strong></td><td>cache.t4g.small, 1 primario + 1 réplica</td><td class="td-right">~$55</td><td>Reserved Node 1 año → −35%</td></tr>
+        <tr><td><strong>Amazon SQS + SNS</strong></td><td>~10M mensajes/mes SQS + 5M notificaciones SNS</td><td class="td-right">~$12</td><td>Batching de mensajes reduce costo por API call</td></tr>
+        <tr><td><strong>AWS API Gateway (HTTP API)</strong></td><td>~30M req/mes. HTTP API vs REST API</td><td class="td-right">~$30</td><td>HTTP API es 71% más barato que REST API</td></tr>
+        <tr><td><strong>Amazon CloudFront</strong></td><td>100 GB desde origen + 1 TB desde edge/mes</td><td class="td-right">~$22</td><td>Cache hit ratio &gt;90%. Price Class 100 (US/EU)</td></tr>
+        <tr><td><strong>Amazon Cognito</strong></td><td>50 000 MAU — dentro del free tier</td><td class="td-right">~$0</td><td>Free tier. A partir de 50 001 MAU: $0.0055/MAU adicional</td></tr>
+        <tr><td><strong>AWS Rekognition</strong></td><td>~2 000 onboardings/mes × FaceLiveness + CompareFaces</td><td class="td-right">~$18</td><td>Solo en onboarding, no en cada login</td></tr>
+        <tr><td><strong>AWS Secrets Manager</strong></td><td>~30 secretos con rotación mensual</td><td class="td-right">~$18</td><td>Consolidar secretos por entorno</td></tr>
+        <tr><td><strong>CloudWatch + X-Ray</strong></td><td>~50 GB logs/mes, dashboards, alarmas</td><td class="td-right">~$45</td><td>Retención 30 días CW → S3. X-Ray sampling 5% en prod</td></tr>
+        <tr><td><strong>Shield Standard + WAF</strong></td><td>Shield Standard (free) + WAF 5 reglas gestionadas</td><td class="td-right">~$25</td><td>Shield Standard cubre DDoS L3/L4 sin costo</td></tr>
+        <tr><td><strong>DR Region (us-west-2)</strong></td><td>RDS standby + DynamoDB Global Tables</td><td class="td-right">~$120</td><td>Pilot Light: solo BD replicada. ECS inactivo. RTO &lt;15 min</td></tr>
+        <tr class="total-row"><td><strong>TOTAL ON-DEMAND / MES</strong></td><td>—</td><td class="td-right">~$1 198</td><td>Con Reserved Instances 1 año: <strong>~$920/mes</strong></td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:11px;color:#718096;margin-top:6px;">* No incluyen impuestos, soporte AWS ni costos de desarrollo.</p>
+
+    <h3>Proyección de crecimiento</h3>
+    <table>
+      <thead><tr><th>Escenario</th><th>MAU</th><th style="text-align:right">Costo/mes (USD)</th><th>Palanca de escala</th></tr></thead>
+      <tbody>
+        <tr><td>Lanzamiento</td><td>50 000</td><td class="td-right">~$920</td><td>Configuración base con Reserved Instances</td></tr>
+        <tr><td>Crecimiento ×3</td><td>150 000</td><td class="td-right">~$1 800</td><td>ECS auto-scaling. RDS escala a db.t4g.large</td></tr>
+        <tr><td>Escala masiva</td><td>500 000</td><td class="td-right">~$4 500</td><td>Aurora Serverless v2. Read replicas adicionales</td></tr>
+        <tr><td>Banco mediano</td><td>2 000 000</td><td class="td-right">~$14 000</td><td>Multi-region activo-activo. Enterprise Support</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Controles FinOps implementados</h3>
+    <ul>
+      <li><strong>AWS Budgets:</strong> alerta al 80% y 100% del presupuesto. Acción automática al superar 110%.</li>
+      <li><strong>Cost Allocation Tags:</strong> todos los recursos etiquetados con <code>env</code>, <code>service</code>, <code>team</code>.</li>
+      <li><strong>AWS Cost Explorer:</strong> revisión semanal + Anomaly Detection ($50/día de umbral).</li>
+      <li><strong>Entornos efímeros:</strong> staging y QA se destruyen fuera de horario laboral. Ahorro −60% en no-prod.</li>
+      <li><strong>Rightsizing trimestral:</strong> Compute Optimizer para ajustar tamaño de tareas Fargate y nodos RDS.</li>
+    </ul>
+  </section>
+
+  <!-- ══════════════════════════════════════════════ § 7 RADAR ══ -->
+  <section class="page-break">
+    <div class="section-header">
+      <div class="section-number">7</div>
+      <h2>Madurez Arquitectónica — Radar</h2>
+    </div>
+    <p>Evaluación multidimensional de la solución en 8 ejes clave. Puntuación 0–10 basada en las decisiones de diseño implementadas.</p>
+
+    <div class="radar-grid">
+      <div class="radar-score-item">
+        <div class="label">Alta Disponibilidad</div>
+        <div class="score" style="color:#1168bd">9.5</div>
+        <div class="radar-score-bar"><div class="radar-score-bar-fill" style="width:95%;background:#1168bd"></div></div>
+        <p style="font-size:11px;margin-top:6px;color:#718096">Multi-AZ, auto-scaling, DR pasivo RTO &lt;15 min</p>
+      </div>
+      <div class="radar-score-item">
+        <div class="label">Seguridad</div>
+        <div class="score" style="color:#e53935">9.2</div>
+        <div class="radar-score-bar"><div class="radar-score-bar-fill" style="width:92%;background:#e53935"></div></div>
+        <p style="font-size:11px;margin-top:6px;color:#718096">OAuth2 PKCE, MFA, KMS, WAF, Shield, Secrets Manager</p>
+      </div>
+      <div class="radar-score-item">
+        <div class="label">Observabilidad</div>
+        <div class="score" style="color:#7b1fa2">8.8</div>
+        <div class="radar-score-bar"><div class="radar-score-bar-fill" style="width:88%;background:#7b1fa2"></div></div>
+        <p style="font-size:11px;margin-top:6px;color:#718096">Golden Signals, SLOs, X-Ray Service Map, alarmas proactivas</p>
+      </div>
+      <div class="radar-score-item">
+        <div class="label">Desacoplamiento</div>
+        <div class="score" style="color:#0288d1">9.0</div>
+        <div class="radar-score-bar"><div class="radar-score-bar-fill" style="width:90%;background:#0288d1"></div></div>
+        <p style="font-size:11px;margin-top:6px;color:#718096">9 microservicios, DB por servicio, eventos asíncronos SQS/SNS</p>
+      </div>
+      <div class="radar-score-item">
+        <div class="label">Patrones de Diseño</div>
+        <div class="score" style="color:#00897b">9.3</div>
+        <div class="radar-score-bar"><div class="radar-score-bar-fill" style="width:93%;background:#00897b"></div></div>
+        <p style="font-size:11px;margin-top:6px;color:#718096">Saga, CQRS, Event Sourcing, BFF, Circuit Breaker, Cache-Aside, Facade</p>
+      </div>
+      <div class="radar-score-item">
+        <div class="label">Cumplimiento Normativo</div>
+        <div class="score" style="color:#f57c00">9.0</div>
+        <div class="radar-score-bar"><div class="radar-score-bar-fill" style="width:90%;background:#f57c00"></div></div>
+        <p style="font-size:11px;margin-top:6px;color:#718096">PCI-DSS v4.0, SFC 052, Ley 1581, GAFI, OWASP Top 10</p>
+      </div>
+      <div class="radar-score-item">
+        <div class="label">Onboarding &amp; Auth</div>
+        <div class="score" style="color:#00897b">9.5</div>
+        <div class="radar-score-bar"><div class="radar-score-bar-fill" style="width:95%;background:#00897b"></div></div>
+        <p style="font-size:11px;margin-top:6px;color:#718096">Biometría Rekognition, liveness, FaceID/PIN, OAuth2 PKCE</p>
+      </div>
+      <div class="radar-score-item">
+        <div class="label">Manejo de Costos</div>
+        <div class="score" style="color:#d81b60">8.0</div>
+        <div class="radar-score-bar"><div class="radar-score-bar-fill" style="width:80%;background:#d81b60"></div></div>
+        <p style="font-size:11px;margin-top:6px;color:#718096">Savings Plans, Reserved RDS, on-demand DynamoDB, FinOps Budgets</p>
+      </div>
+    </div>
+
+    <div class="info-box green" style="margin-top:20px;">
+      <p><strong>Promedio general: 9.04 / 10.</strong> La solución alcanza madurez alta en todas las dimensiones críticas.
+      La menor puntuación (Costos, 8.0) refleja que la optimización de costos es un proceso continuo que mejora con datos reales de producción.</p>
+    </div>
+  </section>
+
+  <!-- ══════════════════════════════════════════════ § 8 CONCLUSIONES ══ -->
+  <section class="page-break">
+    <div class="section-header">
+      <div class="section-number">8</div>
+      <h2>Conclusiones</h2>
+    </div>
+    <p>
+      La arquitectura diseñada para BP Internet Banking cumple los objetivos técnicos, regulatorios y
+      de negocio establecidos en el ejercicio. Las decisiones clave se resumen a continuación:
+    </p>
+    <ul>
+      <li>
+        <strong>Alta Disponibilidad garantizada:</strong> La combinación de Multi-AZ en RDS, auto-scaling en ECS Fargate,
+        Circuit Breaker con Resilience4j y DR pasivo en us-west-2 proporciona un SLA del 99.95% sin single point of failure.
+      </li>
+      <li>
+        <strong>Seguridad regulatoria por diseño:</strong> OAuth2 PKCE, MFA obligatorio, Event Sourcing inmutable,
+        KMS CMK y Secrets Manager son controles que emergen de la arquitectura, no son capas agregadas.
+        Esto garantiza cumplimiento de PCI-DSS v4.0 y Circular SFC 052/2007.
+      </li>
+      <li>
+        <strong>Escalabilidad horizontal sin rediseño:</strong> La arquitectura de microservicios desacoplados permite
+        escalar de 50 000 a 2 000 000 MAU escalando servicios individualmente según demanda,
+        sin migrar la solución completa.
+      </li>
+      <li>
+        <strong>Patrones adecuados para el dominio bancario:</strong> Saga para consistencia eventual en transferencias,
+        CQRS para movimientos de alta lectura, Event Sourcing para auditoría inmutable y Cache-Aside para
+        reducir latencia en consultas frecuentes — cada patrón resuelve una restricción real del dominio.
+      </li>
+      <li>
+        <strong>Costo optimizado desde el diseño:</strong> HTTP API Gateway (−71% vs REST), DynamoDB On-Demand,
+        Fargate Savings Plans y entornos efímeros reducen el gasto mensual de ~$1 198 a ~$920 con
+        compromiso de 1 año, con proyección lineal controlada al crecer.
+      </li>
+    </ul>
+    <div class="info-box">
+      <p><strong>Repositorio del proyecto:</strong> <a href="https://github.com/chetango/bp-internet-banking" target="_blank">github.com/chetango/bp-internet-banking</a> — incluye todos los diagramas SVG, modelo Structurizr DSL, y la aplicación interactiva de documentación.</p>
+    </div>
+
+    <!-- Footer -->
+    <div class="doc-footer">
+      <span>BP Internet Banking — Documento de Arquitectura v1.0.0</span>
+      <span>Mayo 2026 · Confidencial</span>
+    </div>
+  </section>
+
+</div>
+</body>
+</html>
