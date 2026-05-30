@@ -556,7 +556,7 @@
     <input class="search-input" id="global-search" type="text" placeholder="Buscar diagramas, ADRs, servicios..." autocomplete="off"/>
     <div class="search-results" id="search-results"></div>
   </div>
-  <button class="dark-toggle" id="dark-toggle" title="Cambiar tema" onclick="toggleDark()">🌙</button>
+  <button class="dark-toggle" id="dark-toggle" title="Cambiar tema" onclick="toggleDark()">☀️</button>
   <div class="header-badge">Jorge Padilla · Arquitecto de Soluciones · Especialista en Desarrollo de Software · 2026</div>
 </header>
 
@@ -1231,7 +1231,7 @@
           <p>Evaluación multidimensional de la solución BP Internet Banking en 8 ejes clave. Cada eje tiene una puntuación de 0–10 basada en las decisiones de diseño implementadas.</p>
         </div>
         <div id="radar-canvas-wrap">
-          <canvas id="radar-canvas" width="500" height="500"></canvas>
+          <canvas id="radar-canvas" width="700" height="700"></canvas>
         </div>
         <div class="radar-legend">
           <div class="radar-legend-item"><div class="radar-dot-legend" style="background:#1168bd;opacity:0.7"></div> Puntuación actual</div>
@@ -1526,9 +1526,12 @@
     localStorage.setItem('bp-theme', isDark ? 'dark' : 'light');
     if (document.getElementById('panel-radar').classList.contains('active')) drawRadar();
   }
-  if (localStorage.getItem('bp-theme') === 'dark') {
+  // Dark mode by default; only go light if user explicitly chose 'light'
+  if (localStorage.getItem('bp-theme') !== 'light') {
     document.body.classList.add('dark');
     document.getElementById('dark-toggle').textContent = '☀️';
+  } else {
+    document.getElementById('dark-toggle').textContent = '🌙';
   }
 
   // ── GLOBAL SEARCH ──
@@ -1621,11 +1624,11 @@
   function drawRadar() {
     const canvas = document.getElementById('radar-canvas');
     const ctx = canvas.getContext('2d');
-    const cx = 250, cy = 250, R = 200;
+    const cx = 350, cy = 350, R = 200;
     const n = radarData.length;
     const isDark = document.body.classList.contains('dark');
 
-    ctx.clearRect(0, 0, 500, 500);
+    ctx.clearRect(0, 0, 700, 700);
 
     // Grid circles
     for (let r = 1; r <= 5; r++) {
@@ -1690,15 +1693,27 @@
     });
 
     // Labels
-    ctx.font = 'bold 11px Segoe UI';
+    ctx.font = 'bold 12px Segoe UI';
     radarData.forEach((d, i) => {
       const angle = (2 * Math.PI * i / n) - Math.PI / 2;
-      const lx = cx + (R + 28) * Math.cos(angle);
-      const ly = cy + (R + 28) * Math.sin(angle);
+      const lx = cx + (R + 36) * Math.cos(angle);
+      const ly = cy + (R + 36) * Math.sin(angle);
       ctx.fillStyle = isDark ? '#c5cae9' : '#333';
       ctx.textAlign = Math.abs(lx - cx) < 10 ? 'center' : lx > cx ? 'left' : 'right';
-      ctx.textBaseline = ly < cy ? 'bottom' : 'top';
-      ctx.fillText(d.label, lx, ly);
+      ctx.textBaseline = ly < cy - 10 ? 'bottom' : ly > cy + 10 ? 'top' : 'middle';
+      // Split long labels into two lines
+      const words = d.label.split(' ');
+      if (words.length > 1 && d.label.length > 12) {
+        const mid = Math.ceil(words.length / 2);
+        const line1 = words.slice(0, mid).join(' ');
+        const line2 = words.slice(mid).join(' ');
+        const lineH = 15;
+        const offsetY = ctx.textBaseline === 'bottom' ? -lineH / 2 : ctx.textBaseline === 'top' ? lineH / 2 : 0;
+        ctx.fillText(line1, lx, ly - lineH / 2 + offsetY);
+        ctx.fillText(line2, lx, ly + lineH / 2 + offsetY);
+      } else {
+        ctx.fillText(d.label, lx, ly);
+      }
     });
   }
 
