@@ -373,6 +373,10 @@
   <line x1="294" y1="678" x2="294" y2="845" stroke="#e06c00" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
   <!-- Auth → BD Principal (vertical) -->
   <line x1="129" y1="678" x2="129" y2="845" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <!-- Account → BD Principal (diagonal) -->
+  <line x1="459" y1="678" x2="160" y2="845" stroke="#555" stroke-width="1.2" marker-end="url(#arrow)"/>
+  <!-- Account → Cache (diagonal) -->
+  <line x1="459" y1="678" x2="310" y2="845" stroke="#e06c00" stroke-width="1.2" stroke-dasharray="4,2" marker-end="url(#arrow)"/>
 
   <!-- ===== FLECHAS EXTERNAS — cada una al mismo nivel que su externo ===== -->
 
